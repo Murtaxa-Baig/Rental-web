@@ -82,30 +82,78 @@ export default function page() {
 
                         <hr className='text-gray-500 my-4' />
 
-                        <div className='w-full flex items-center justify-between'>
-                            <div className='w-[49%] flex items-center justify-between'>
-                                <input type="date" className='w-[70%] outline-none p-2 border-[1px] border-gray-500 rounded-[6px]' />
-                                <input type="time" className='w-[25%] outline-none p-2 border-[1px] border-gray-500 rounded-[6px]' />
+                        <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div className="w-full md:w-[49%] flex flex-col md:flex-row md:items-center md:justify-between">
+                                <div className="relative w-full md:w-[60%] mb-4 md:mb-0">
+                                    <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
+                                        Start Date
+                                    </label>
+                                    <input
+                                        type="date"
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                                <div className="relative w-full md:w-[35%]">
+                                    <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
+                                        Start time
+                                    </label>
+                                    <input
+                                        type="time"
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
                             </div>
-                            <div className='w-[49%] flex items-center justify-between'>
-                                <input type="date" className='w-[70%] outline-none p-2 border-[1px] border-gray-500 rounded-[6px]' />
-                                <input type="time" className='w-[25%] outline-none p-2 border-[1px] border-gray-500 rounded-[6px]' />
+                            <div className="w-full md:w-[49%] flex flex-col md:flex-row md:items-center md:justify-between mt-4 md:mt-0">
+                                <div className="relative w-full md:w-[60%] mb-4 md:mb-0">
+                                    <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
+                                        End Date
+                                    </label>
+                                    <input
+                                        type="date"
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                                <div className="relative w-full md:w-[35%]">
+                                    <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
+                                        End time
+                                    </label>
+                                    <input
+                                        type="time"
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
                             </div>
-
                         </div>
 
 
-                        <div className='w-full flex items-center justify-between mt-4'>
-                            <input type="text" className='w-[49%] outline-none p-2 border-[1px] border-gray-500 rounded-[6px]' />
-                            <input type="text" className='w-[49%] outline-none p-2 border-[1px] border-gray-500 rounded-[6px]' />
+
+                        <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-4">
+                            <div className="relative w-full md:w-[49%] mb-4 md:mb-0">
+                                <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
+                                    Pickup location
+                                </label>
+                                <input
+                                    type="text"
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div className="relative w-full md:w-[49%]">
+                                <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
+                                    Return location
+                                </label>
+                                <input
+                                    type="text"
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
                         </div>
 
 
                         <div className='flex flex-col mt-4 md:flex-row items-center md:justify-between'>
                             <input
                                 type="text"
-                                placeholder='Search Reservation'
-                                className='w-full md:w-[72%] mr-4 p-3 border-[1px] border-black outline-none rounded-md h-14 mb-4 md:mb-0'
+                                placeholder='Search Vehicle'
+                                className='w-full md:w-[72%]  p-3 border-[1px] border-black outline-none rounded-md h-14 mb-4 md:mb-0'
                             />
                             <div className='flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4 w-full md:w-auto'>
                                 <button className='border-[1px] h-14 px-3 rounded-md shadow-lg w-full md:w-auto flex justify-center items-center hover:bg-gray-200'>
@@ -148,8 +196,6 @@ export default function page() {
 
 
                     </div>
-
-
                 </main>
                 <aside className="hidden md:block md:w-3/20 lg:w-[25%]">
                     <div className='bg-white rounded-lg p-3'>

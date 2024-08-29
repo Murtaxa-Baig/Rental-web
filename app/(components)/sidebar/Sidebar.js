@@ -80,7 +80,8 @@ export default function Sidebar() {
                 </AccordionItemButton>
               </AccordionItemHeading>
               <AccordionItemPanel>
-                <button
+                <Link 
+                href='/add-reservation'
                   className='flex items-center  font-bold text-gray-500 text-sm'>
                   <Image
                     src={add}
@@ -90,10 +91,10 @@ export default function Sidebar() {
                     alt="Filter Icon"
                   />
                   New reservation
-                </button>
+                </Link>
               </AccordionItemPanel>
               <AccordionItemPanel>
-                <button href="/reservations"
+                <Link href="/reservations"
                   className='flex items-center font-bold text-gray-500 text-sm'>
                   <Image
                     src={allReservation}
@@ -103,7 +104,7 @@ export default function Sidebar() {
                     alt="Filter Icon"
                   />
                   All reservations
-                </button>
+                </Link>
               </AccordionItemPanel>
             </AccordionItem>
           </Accordion>
@@ -127,7 +128,7 @@ export default function Sidebar() {
                 </AccordionItemButton>
               </AccordionItemHeading>
               <AccordionItemPanel>
-                <button
+                <Link href='/add-client'
                   className='flex items-center  font-bold text-gray-500 text-sm'>
                   <Image
                     src={add}
@@ -137,10 +138,10 @@ export default function Sidebar() {
                     alt="Filter Icon"
                   />
                   New Client
-                </button>
+                </Link>
               </AccordionItemPanel>
               <AccordionItemPanel>
-                <button href="/reservations"
+                <Link href="/add-agency"
                   className='flex items-center font-bold text-gray-500 text-sm'>
                   <Image
                     src={add}
@@ -150,10 +151,10 @@ export default function Sidebar() {
                     alt="Filter Icon"
                   />
                   New Customer
-                </button>
+                </Link>
               </AccordionItemPanel>
               <AccordionItemPanel>
-                <button href="/reservations"
+                <Link href="/all-customer"
                   className='flex items-center font-bold text-gray-500 text-sm'>
                   <Image
                     src={allReservation}
@@ -163,7 +164,7 @@ export default function Sidebar() {
                     alt="Filter Icon"
                   />
                   All Customer
-                </button>
+                </Link>
               </AccordionItemPanel>
             </AccordionItem>
           </Accordion>
@@ -176,7 +177,7 @@ export default function Sidebar() {
             <AccordionItem>
               <AccordionItemHeading>
                 <AccordionItemButton className="flex items-center">
-                  <Link href=""
+                  <button
                     className='w-full flex items-center h-16 px-4 font-bold text-gray-500'>
                     <Image
                       src={car}
@@ -186,7 +187,7 @@ export default function Sidebar() {
                       alt="Filter Icon"
                     />
                     Vehicle
-                  </Link>
+                  </button>
 
                 </AccordionItemButton>
               </AccordionItemHeading>

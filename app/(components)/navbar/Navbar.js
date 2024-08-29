@@ -11,7 +11,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="bg-blue-800 p-4">
+            <nav className="bg-blue-600 p-4">
                 <div className="container mx-auto flex items-center justify-between">
                     {/* Left Side: Company Icon and Buttons */}
                     <div className="flex items-center space-x-4">
@@ -110,10 +110,18 @@ export default function Navbar() {
                 {/* Mobile View: Dropdown Menu */}
                 {isMobileMenuOpen && (
                     <div className="md:hidden flex flex-col space-y-2 mt-2">
-                        <button className="text-white">All reservations</button>
-                        <button className="text-white">New reservations</button>
-                        <button className="text-white">Add customer</button>
-                        <button className="text-white">Add vehicle</button>
+                        <button className="text-white">
+                            <Link href='/reservations' >All reservations</Link>
+                        </button>
+                        <button className="text-white">
+                            <Link href='/add-reservation' >New reservations</Link>
+                        </button>
+                        <button className="text-white">
+                            <Link href='/add-customer' >Add customer</Link>
+                        </button>
+                        <button className="text-white">
+                            <Link href='/add-vehicle'>Add vehicle</Link>
+                        </button>
                     </div>
                 )}
             </nav>
