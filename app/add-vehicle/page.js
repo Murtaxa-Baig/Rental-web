@@ -1,21 +1,20 @@
 'use client'
 import Link from 'next/link'
 import React, { useState } from 'react';
-import AddClient from '../(components)/addClient/AddClient';
-import AddAgency from '../(components)/addAgency/AddAgency';
-import AddStaffDriver from '../(components)/addStaffDriver/AddStaffDriver';
-
+import VehicleInformation from '../(components)/vehicleInformation/VehicleInformation';
+import AddVehicleImages from '../(components)/addVehicleImages/AddVehicleImages';
+import Damages from '../(components)/damages/Damages';
 export default function Page() {
   const [activeTab, setActiveTab] = useState('Vehicle information');
 
   const renderContent = () => {
     switch (activeTab) {
       case 'Vehicle information':
-        return <div>Vehicle information</div>;
+        return <VehicleInformation />;
       case 'Add Images':
-        return <div>Add Images</div>;
+        return <AddVehicleImages />;
       case 'Damages':
-        return <div>Add Images</div>;
+        return <Damages />;
       default:
         return null;
     }
