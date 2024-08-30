@@ -28,7 +28,7 @@ export default function AddAgency() {
                     </div>
                     <div className="relative w-full md:w-[49%]">
                         <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                            Person's Name
+                            Person{`'`}s Name
                         </label>
                         <input
                             type="text"
@@ -40,7 +40,7 @@ export default function AddAgency() {
                 <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-8">
                     <div className="relative w-full md:w-[49%] mb-4 md:mb-0">
                         <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                            Person's Surname
+                            Person{`'`}s Surname
                         </label>
                         <input
                             type="text"
@@ -49,7 +49,7 @@ export default function AddAgency() {
                     </div>
                     <div className="relative w-full md:w-[49%]">
                         <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                            Person's Number
+                            Person{`'`}s Number
                         </label>
                         <input
                             type="text"

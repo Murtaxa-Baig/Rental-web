@@ -9,7 +9,7 @@ import { useState } from 'react'
 
 
 
-export default function page() {
+export default function Page() {
     const [checked, setChecked] = useState(false);
 
     

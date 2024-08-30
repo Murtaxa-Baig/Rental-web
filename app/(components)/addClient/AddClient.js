@@ -80,13 +80,13 @@ export default function AddClient() {
                         />
                     </div>
                 </div>
-                <p className='font-bold text-gray-400 my-3'>Here you can decide if the client is your own or if it's agency's client</p>
+                <p className='font-bold text-gray-400 my-3'>Here you can decide if the client is your own or if it{`'`}s agency{`'`}s client</p>
 
 
                 <div className="grid grid-cols-1 mt-5 sm:grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-4">
                     <div className="md:col-span-1 lg:col-span-1 w-full flex items-center border-2 p-2 rounded-md h-14">
                         <input type="radio" />
-                        <p className="font-bold text-gray-500 ml-2">It's own client</p>
+                        <p className="font-bold text-gray-500 ml-2">It{`'`}s own client</p>
                     </div>
                     <div className="md:col-span-3 lg:col-span-3 w-full relative h-14">
                         <label className="absolute -top-3 left-3 font-bold bg-white px-1 text-[12px] text-gray-600">
@@ -94,7 +94,6 @@ export default function AddClient() {
                         </label>
                         <input
                             type="text"
-                            placeholder=''
                             className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none h-full"
                         />
                     </div>
@@ -131,7 +130,7 @@ export default function AddClient() {
                             alt="Filter Icon"
                         />
                         <label For="vip" className='font-bold  text-gray-600'>
-                            It's VIP Client
+                            It{`'`}s VIP Client
                         </label>
                     </div>
                     <div className='flex items-center'>
