@@ -103,7 +103,7 @@ export default function Sidebar() {
                     className='mr-2 '
                     alt="Filter Icon"
                   />
-                  All reservations
+                  Reservation List
                 </Link>
               </AccordionItemPanel>
             </AccordionItem>
@@ -163,7 +163,7 @@ export default function Sidebar() {
                     className='mr-2 '
                     alt="Filter Icon"
                   />
-                  All Customer
+                  Customers
                 </Link>
               </AccordionItemPanel>
             </AccordionItem>
@@ -192,7 +192,7 @@ export default function Sidebar() {
                 </AccordionItemButton>
               </AccordionItemHeading>
               <AccordionItemPanel>
-                <button
+                <Link href='/add-vehicle'
                   className='flex items-center  font-bold text-gray-500 text-sm'>
                   <Image
                     src={add}
@@ -202,10 +202,10 @@ export default function Sidebar() {
                     alt="Filter Icon"
                   />
                   Add vehicle
-                </button>
+                </Link>
               </AccordionItemPanel>
               <AccordionItemPanel>
-                <button href="/reservations"
+                <Link href="/vehicles"
                   className='flex items-center font-bold text-gray-500 text-sm'>
                   <Image
                     src={allReservation}
@@ -215,9 +215,9 @@ export default function Sidebar() {
                     alt="Filter Icon"
                   />
                   Vehicle list
-                </button>
+                </Link>
               </AccordionItemPanel>
-              <AccordionItemPanel>
+              {/* <AccordionItemPanel>
                 <button href="/reservations"
                   className='flex items-center font-bold text-gray-500 text-sm'>
                   <Image
@@ -229,7 +229,7 @@ export default function Sidebar() {
                   />
                   Reminder history
                 </button>
-              </AccordionItemPanel>
+              </AccordionItemPanel> */}
             </AccordionItem>
           </Accordion>
 
@@ -246,7 +246,7 @@ export default function Sidebar() {
             Users
           </Link>
           <hr className='text-gray-500' />
-          <Link href=""
+          <Link href="/invoices"
             className='w-full flex items-center h-16 px-4 font-bold text-gray-500'>
             <Image
               src={file}
