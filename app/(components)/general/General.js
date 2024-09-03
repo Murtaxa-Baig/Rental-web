@@ -237,7 +237,7 @@ export default function General() {
                 <p className='font-bold text-gray-500 text-sm'>Courier not assigned warning</p>
                 <div className='w-full flex flex-col md:flex-row items-start md:items-center justify-between'>
                     <p className='w-full md:w-[70%] text-[12px] text-gray-400 mb-2 md:mb-0'>
-                        Type time in hours before showing “ assign courier” warning on reservations page.
+                        Type time in hours before showing assign courier warning on reservations page.
                     </p>
                     <div className=' w-full md:w-[25%]'>
                         <input type='text' className='w-full border-[1px] border-gray-400 rounded-sm h-14 px-2 outline-none' />
