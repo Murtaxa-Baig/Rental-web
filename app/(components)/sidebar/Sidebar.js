@@ -80,8 +80,8 @@ export default function Sidebar() {
                 </AccordionItemButton>
               </AccordionItemHeading>
               <AccordionItemPanel>
-                <Link 
-                href='/add-reservation'
+                <Link
+                  href='/add-reservation'
                   className='flex items-center  font-bold text-gray-500 text-sm'>
                   <Image
                     src={add}
@@ -259,7 +259,7 @@ export default function Sidebar() {
           </Link>
 
           <hr className='text-gray-500' />
-          <Link href=""
+          <Link href="/settings"
             className='w-full flex items-center h-16 px-4 font-bold text-gray-500'>
             <Image
               src={setting}
@@ -282,7 +282,7 @@ export default function Sidebar() {
               className='mr-2'
               alt="Filter Icon"
             />
-             Send feedback
+            Send feedback
           </Link>
 
         </div>
