@@ -5,7 +5,7 @@ import Image from 'next/image'
 import add from '@/public/images/add.svg'
 import NewPaymentModal from '../(components)/modal/newPaymentModal/NewPaymentModal'
 
-export default function page() {
+export default function Page() {
 
     const [showModal, setShowModal] = useState(false)
 

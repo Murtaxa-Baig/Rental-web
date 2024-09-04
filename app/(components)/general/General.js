@@ -5,6 +5,9 @@ export default function General() {
 
     const [emailsBranding, setEmailsBranding] = useState(true)
     const [vehicleOwner, setVehicleOwner] = useState(false)
+    const [hidePrice, setHidePrice] = useState(true)
+    const [customerEmail, setCustomerEmail] = useState(false)
+    const [driverDamageDelete, setDriverDamageDelete] = useState(false)
 
     const EmailsBrandingTrue = () => {
         setEmailsBranding(true)
@@ -20,6 +23,31 @@ export default function General() {
 
     const VehicleOwnerFalse = () => {
         setVehicleOwner(false)
+    }
+
+    const HidePriceTrue = () => {
+        setHidePrice(true)
+    }
+
+    const HidePriceFalse = () => {
+        setHidePrice(false)
+    }
+
+    const CustomerEmailTrue = () => {
+        customerEmail(true)
+    }
+
+    const CustomerEmailFalse = () => {
+        customerEmail(false)
+    }
+
+
+    const DriverDamageDeleteTrue = () => {
+        setDriverDamageDelete(true)
+    }
+
+    const DriverDamageDeleteFalse = () => {
+        setDriverDamageDelete(false)
     }
 
 
@@ -139,7 +167,7 @@ export default function General() {
                 <p className='font-bold text-gray-500 text-sm'>Hide vehicle owners</p>
                 <div className='w-full flex flex-col md:flex-row items-start md:items-center justify-between'>
                     <p className='w-full md:w-[70%] text-[12px] text-gray-400 mb-2 md:mb-0'>
-                        If you choose "yes" the system will hide vehicles owners in calendar for partners
+                        If you choose yes the system will hide vehicles owners in calendar for partners
                     </p>
                     <div className='flex items-center w-full md:w-[25%]'>
                         <button
@@ -383,6 +411,87 @@ export default function General() {
                         </select>
                     </div>
                 </div>
+            </div>
+
+
+            <hr className='text-gray-400 my-5' />
+            <div className='p-3'>
+                <p className='font-bold text-gray-500 text-sm'>Hide price from agreement</p>
+                <div className='w-full flex flex-col md:flex-row items-start md:items-center justify-between'>
+                    <p className='w-full md:w-[70%] text-[12px] text-gray-400 mb-2 md:mb-0'>
+                        If you choose yes the system will hide price from agreement
+                    </p>
+                    <div className='flex items-center w-full md:w-[25%]'>
+                        <button
+                            onClick={HidePriceTrue}
+                            className={`w-1/2 border-l border-t border-b font-bold ${hidePrice ? 'border-green-500 bg-green-100' : 'border-gray-300'} text-blue-500 rounded-sm px-4 py-2`}>
+                            Yes
+                        </button>
+                        <button
+                            onClick={HidePriceFalse}
+                            className={`w-1/2 border-r border-t border-b font-bold ${hidePrice ? 'border-gray-300' : 'border-red-500 bg-red-100'} text-blue-500 rounded-sm px-4 py-2`}>
+                            No
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr className='text-gray-400 my-5' />
+
+
+            <div className='p-3'>
+                <p className='font-bold text-gray-500 text-sm'>Send customer email on delivery/collection</p>
+                <div className='w-full flex flex-col md:flex-row items-start md:items-center justify-between'>
+                    <p className='w-full md:w-[70%] text-[12px] text-gray-400 mb-2 md:mb-0'>
+                        If you choose yes the system will send email to customer on delivery/collection
+                    </p>
+                    <div className='flex items-center w-full md:w-[25%]'>
+                        <button
+                            onClick={CustomerEmailTrue}
+                            className={`w-1/2 border-l border-t border-b font-bold ${customerEmail ? 'border-green-500 bg-green-100' : 'border-gray-300'} text-blue-500 rounded-sm px-4 py-2`}>
+                            Yes
+                        </button>
+                        <button
+                            onClick={CustomerEmailFalse}
+                            className={`w-1/2 border-r border-t border-b font-bold ${customerEmail ? 'border-gray-300' : 'border-red-500 bg-red-100'} text-blue-500 rounded-sm px-4 py-2`}>
+                            No
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr className='text-gray-400 my-5' />
+
+
+
+            <div className='p-3'>
+                <p className='font-bold text-gray-500 text-sm'>Allow drivers delete damages</p>
+                <div className='w-full flex flex-col md:flex-row items-start md:items-center justify-between'>
+                    <p className='w-full md:w-[70%] text-[12px] text-gray-400 mb-2 md:mb-0'>
+                        If you choose yes drivers can delete damages
+                    </p>
+                    <div className='flex items-center w-full md:w-[25%]'>
+                        <button
+                            onClick={DriverDamageDeleteTrue}
+                            className={`w-1/2 border-l border-t border-b font-bold ${driverDamageDelete ? 'border-green-500 bg-green-100' : 'border-gray-300'} text-blue-500 rounded-sm px-4 py-2`}>
+                            Yes
+                        </button>
+                        <button
+                            onClick={DriverDamageDeleteFalse}
+                            className={`w-1/2 border-r border-t border-b font-bold ${driverDamageDelete ? 'border-gray-300' : 'border-red-500 bg-red-100'} text-blue-500 rounded-sm px-4 py-2`}>
+                            No
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr className='text-gray-400 my-5' />
+
+            <div className='flex items-center w-[30%] gap-2 mt-8'>
+                <button className='py-2 px-6 flex justify-center items-center border-[1px] border-blue-400 text-blue-500 font-bold rounded-md'>
+                    Cancel
+                </button>
+                <button className='py-2 px-6 flex justify-center items-center text-white bg-blue-500 font-bold rounded-md'>
+                    Save
+                </button>
+                
             </div>
 
 

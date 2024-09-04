@@ -5,7 +5,7 @@ import Clients from '../(components)/clients/Clients';
 import Companies from '../(components)/companies/Companies';
 import AllCustomer from '../(components)/allCustomer/AllCustomer';
 
-export default function page() {
+export default function Page() {
     const [activeTab, setActiveTab] = useState('Clients');
 
     const renderContent = () => {

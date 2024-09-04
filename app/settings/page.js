@@ -5,8 +5,11 @@ import { useState } from 'react'
 import MyProfile from '../(components)/myProfile/MyProfile'
 import Companiess from '../(components)/companiess/Companiess'
 import General from '../(components)/general/General'
+import Invoicing from '../(components)/invoicing/Invoicing'
+import Agreement from '../(components)/agreement/Agreement'
+import Notification from '../(components)/notification/Notification'
 
-export default function page() {
+export default function Page() {
     const [activeTab, setActiveTab] = useState('My Profile');
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -20,6 +23,12 @@ export default function page() {
                 return <Companiess />;
             case 'General':
                 return <General />;
+            case 'Invoicing':
+                return <Invoicing />;
+            case 'Agreement':
+                return <Agreement />;
+            case 'Notification':
+                return <Notification />;
             default:
                 return null;
         }
