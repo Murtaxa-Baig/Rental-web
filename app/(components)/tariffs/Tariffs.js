@@ -384,7 +384,7 @@ export default function Tariffs() {
                     tariffication ? (<>
                         <p className='text-gray-600 my-5'>Tariff is calculated by working days of rental.</p>
                         <p className='text-gray-600 text-sm'>
-                            Working days count calculates by algorithm: if start day and end day it's same
+                            Working days count calculates by algorithm: if start day and end day it{`'`}s same
                             date, then days = 1, if rent from evening to morning of next day then days = 2,
                             or if rent from friday to monday, then days = 4.
                         </p>
@@ -394,7 +394,7 @@ export default function Tariffs() {
                         <p className='text-gray-600 text-sm'>
                             Days count calculates by formula: days = total hours / 24 (hours in day)
                             and rounded to upper integer. Rent for few hours is calculated as for one day.
-                            And rent from 10 o'clock to 11 o'clock next day is calculated as for two days.
+                            And rent from 10 o{`'`}clock to 11 o{`'`}clock next day is calculated as for two days.
                         </p>
                         <div className='flex items-center mt-5 bg-cyan-200 rounded-md p-2'>
                             <Image

@@ -97,7 +97,7 @@ export default function Integration() {
                             </div>
                             <div className='flex items-center my-3'>
                                 <input type="checkbox" name="" id="nameInTitle" className='h-4 w-4 ' />
-                                <label For="nameInTitle" className='text-gray-500 mx-2'>Show partner's name in title</label>
+                                <label For="nameInTitle" className='text-gray-500 mx-2'>Show partner{`'`}s name in title</label>
                             </div>
                             <div className='flex justify-end'>
                                 <button
