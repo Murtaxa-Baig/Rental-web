@@ -34,11 +34,11 @@ export default function General() {
     }
 
     const CustomerEmailTrue = () => {
-        customerEmail(true)
+        setCustomerEmail(true)
     }
 
     const CustomerEmailFalse = () => {
-        customerEmail(false)
+        setCustomerEmail(false)
     }
 
 

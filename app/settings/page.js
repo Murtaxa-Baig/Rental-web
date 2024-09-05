@@ -8,6 +8,9 @@ import General from '../(components)/general/General'
 import Invoicing from '../(components)/invoicing/Invoicing'
 import Agreement from '../(components)/agreement/Agreement'
 import Notification from '../(components)/notification/Notification'
+import Integration from '../(components)/integration/Integration'
+import Tariffs from '../(components)/tariffs/Tariffs'
+import Extra from '../(components)/extra/Extra'
 
 export default function Page() {
     const [activeTab, setActiveTab] = useState('My Profile');
@@ -29,6 +32,12 @@ export default function Page() {
                 return <Agreement />;
             case 'Notification':
                 return <Notification />;
+            case 'Integration':
+                return <Integration />;
+            case 'Tariffs':
+                return <Tariffs />;
+            case 'Extra':
+                return <Extra />;
             default:
                 return null;
         }
@@ -54,7 +63,7 @@ export default function Page() {
 
             <div className='py-4 bg-white w-full rounded-md flex'>
                 {/* Sidebar */}
-                <div className={`fixed inset-0 z-20 bg-white w-3/4 p-4 md:w-1/5 md:relative md:block ${sidebarOpen ? 'block' : 'hidden'} md:flex md:flex-col rounded-md`}>
+                <div className={`fixed inset-0  bg-white w-3/4 p-4 md:w-1/5 md:relative md:block ${sidebarOpen ? 'block' : 'hidden'} md:flex md:flex-col rounded-md`}>
                     <ul>
                         {sidebarItems.map((tab) => (
                             <li
