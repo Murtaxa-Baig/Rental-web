@@ -14,12 +14,37 @@ import { useState } from 'react'
 
 export default function Page() {
     const [checked, setChecked] = useState(false);
-
+    const [selectColor, setSelectColor] = useState('text-orange-600');
 
 
     const handleChange = (nextChecked) => {
         setChecked(nextChecked);
     };
+
+    const handleColor = (event) => {
+        const value = event.target.value;
+
+        switch (value) {
+            case 'REQUESTED':
+                setSelectColor('text-orange-600');
+                break;
+            case 'CONFIRMED':
+                setSelectColor('text-green-600');
+                break;
+            case 'MAINTAINENCE':
+                setSelectColor('text-gray-400');
+                break;
+            case 'COMPLETED':
+                setSelectColor('text-blue-600');
+                break;
+            case 'CANCELED':
+                setSelectColor('text-red-500');
+                break;
+            default:
+                setSelectColor('text-gray-600');
+        }
+    };
+
 
     return (
         <>
@@ -198,8 +223,29 @@ export default function Page() {
                     </div>
                 </main>
                 <aside className="hidden md:block md:w-3/20 lg:w-[25%]">
-                    <div className='bg-white rounded-lg p-3'>
-                        <p>text</p>
+                    <div className='bg-white rounded-lg'>
+                        <p className=' p-3 font-bold'>Basic information</p>
+                        <hr className='text-gray-400' />
+
+                        <div className='p-3'>
+                            <p className='font-semibold text-sm mb-4'>Status</p>
+                            <select
+                                name=""
+                                id=""
+                                className={`w-full my-2 border-[1px] border-gray-400 font-bold rounded-sm h-12 px-2 ${selectColor}`}
+                                onChange={handleColor}
+                            >
+                                <option value="REQUESTED" className='text-orange-500 font-bold'>REQUESTED</option>
+                                <option value="CONFIRMED" className='text-green-600 font-bold'>CONFIRMED</option>
+                                <option value="MAINTAINENCE" className='text-gray-400 font-bold'>MAINTAINENCE</option>
+                                <option value="COMPLETED" className='text-blue-600 font-bold'>COMPLETED</option>
+                                <option value="CANCELED" className='text-red-500 font-bold'>CANCELED</option>
+                            </select>
+                            <hr className='text-gray-400' />
+
+                            <p className='font-semibold text-sm mb-4'>Dates</p>
+
+                        </div>
                     </div>
                 </aside>
             </div>

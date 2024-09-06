@@ -11,12 +11,13 @@ import Notification from '../(components)/notification/Notification'
 import Integration from '../(components)/integration/Integration'
 import Tariffs from '../(components)/tariffs/Tariffs'
 import Extra from '../(components)/extra/Extra'
-
+import Reminder from '../(components)/reminder/Reminder'
+import ExportData from '../(components)/exportData/ExportData'
 export default function Page() {
     const [activeTab, setActiveTab] = useState('My Profile');
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
-    const sidebarItems = ["My Profile", "Companies", "General", "Invoicing", "Agreement", "Notification", "Integration", "Tariffs", "Extra", "Reminder", "Vehicle reminder", "Export data", "Booking Widget", "Synchronizations"]
+    const sidebarItems = ["My Profile", "Companies", "General", "Invoicing", "Agreement", "Notification", "Integration", "Tariffs", "Extra", "Reminder", "Export data"]
 
     const renderContent = () => {
         switch (activeTab) {
@@ -38,6 +39,10 @@ export default function Page() {
                 return <Tariffs />;
             case 'Extra':
                 return <Extra />;
+            case 'Reminder':
+                return <Reminder />;
+            case 'Export data':
+                return <ExportData />;
             default:
                 return null;
         }
