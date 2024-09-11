@@ -9,13 +9,32 @@ import filt from "@/public/images/filter.svg"
 import service from '@/public/images/service.svg'
 import file from '@/public/images/file.svg'
 import Switch from 'react-switch';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 
 export default function Page() {
     const [checked, setChecked] = useState(false);
     const [selectColor, setSelectColor] = useState('text-orange-600');
+    const [formDate, setFormDate] = useState('');
+    const [untilDate, setUntilDate] = useState('');
 
+    useEffect(() => {
+        const dateObj = new Date();
+
+        // Get the parts of the date
+        const day = dateObj.getDate().toString().padStart(2, '0'); // Adds leading 0 for day
+        const month = dateObj.toLocaleString('default', { month: 'short' }); // "Sep"
+        const year = dateObj.getFullYear(); // "2024"
+
+        // Get the time in 24-hour format
+        const time = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }); // "07:00"
+
+        // Combine the date and time as desired
+        const newDate = `${day} ${month} ${year} | ${time}`;
+
+        setFormDate(newDate);
+        setUntilDate(newDate)
+    }, []);
 
     const handleChange = (nextChecked) => {
         setChecked(nextChecked);
@@ -115,6 +134,7 @@ export default function Page() {
                                     </label>
                                     <input
                                         type="date"
+                                        onChange={(e)=>setFormDate(e.target.value)}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
@@ -135,6 +155,7 @@ export default function Page() {
                                     </label>
                                     <input
                                         type="date"
+                                        onChange={(e)=>setUntilDate(e.target.value)}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
@@ -243,8 +264,33 @@ export default function Page() {
                             </select>
                             <hr className='text-gray-400' />
 
-                            <p className='font-semibold text-sm mb-4'>Dates</p>
+                            <p className='font-semibold text-sm mb-4'>DATES</p>
 
+                            <div className='flex items-center justify-between'>
+                                <p className='text-gray-400'>From:</p>
+                                <p className='font-bold text-sm'>{formDate}</p>
+                            </div>
+                            <hr className='text-gray-400' />
+                            <div className='flex items-center justify-between mt-4'>
+                                <p className='text-gray-400'>Until:</p>
+                                <p className='font-bold text-sm'>{untilDate}</p>
+                            </div>
+                            <hr className='text-gray-400' />
+
+                            <p className='font-semibold text-sm my-5'>LOCATIONS</p>
+
+                            <p className='text-sm font-bold'>Delivery location:</p>
+                            <p className='text-[12px] font-bold mt-2 text-gray-700'>Via Foro S. Martino, 22, 21012 Cassano Magnago VA, Italy</p>
+
+                            <p className='text-sm font-bold'>Return location:</p>
+                            <p className='text-[12px] font-bold mt-2 text-gray-700'>Via Foro S. Martino, 22, 21012 Cassano Magnago VA, Italy</p>
+
+
+
+                            <p className='font-semibold text-sm my-5'>VEHICLES</p>
+                            <hr />
+                            
+                            <p className='font-semibold text-sm my-5'>CUSTOMER</p>
                         </div>
                     </div>
                 </aside>
