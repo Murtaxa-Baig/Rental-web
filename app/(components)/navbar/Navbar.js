@@ -145,7 +145,7 @@ export default function Navbar() {
                                     </div>
                                 </Link>
                                 <hr className='text-gray-500' />
-                                <Link href="/">
+                                <Link href="/offer-generator">
                                     <div onClick={() => setIsMobileMenuOpen(false)} className='w-full flex items-center h-14 px-4 font-bold text-gray-500'>
                                         <Image src={cash} width={20} height={20} className='mr-4' alt="Filter Icon" />
                                         Offers generator

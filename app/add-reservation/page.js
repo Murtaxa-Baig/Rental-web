@@ -134,7 +134,7 @@ export default function Page() {
                                     </label>
                                     <input
                                         type="date"
-                                        onChange={(e)=>setFormDate(e.target.value)}
+                                        onChange={(e) => setFormDate(e.target.value)}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
@@ -155,7 +155,7 @@ export default function Page() {
                                     </label>
                                     <input
                                         type="date"
-                                        onChange={(e)=>setUntilDate(e.target.value)}
+                                        onChange={(e) => setUntilDate(e.target.value)}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
@@ -289,7 +289,7 @@ export default function Page() {
 
                             <p className='font-semibold text-sm my-5'>VEHICLES</p>
                             <hr />
-                            
+
                             <p className='font-semibold text-sm my-5'>CUSTOMER</p>
                         </div>
                     </div>

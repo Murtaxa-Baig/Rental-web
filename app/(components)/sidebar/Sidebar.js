@@ -49,7 +49,7 @@ export default function Sidebar() {
             Calender
           </Link>
           <hr className='text-gray-500' />
-          <Link href="/"
+          <Link href="/offer-generator"
             className='w-full flex items-center h-16 px-4 font-bold text-gray-500'>
             <Image
               src={cash}
