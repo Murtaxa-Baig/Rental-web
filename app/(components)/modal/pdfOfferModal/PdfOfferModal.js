@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function pdfOfferModal({ setPdfModal }) {
+export default function PdfOfferModal({ setPdfModal }) {
     const closeModal = () => {
         setPdfModal(false);
     };

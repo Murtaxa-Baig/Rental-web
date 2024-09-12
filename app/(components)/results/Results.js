@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import abarth from '@/public/images/abarth.jpg'
 import Image from 'next/image'
-import pdfOfferModal from '@/app/(components)/modal/pdfOfferModal/pdfOfferModal'
+import PdfOfferModal from '@/app/(components)/modal/pdfOfferModal/PdfOfferModal'
 
 
 export default function Results() {
@@ -168,7 +168,7 @@ export default function Results() {
             </div>
 
             {
-                pdfModal && <pdfOfferModal
+                pdfModal && <PdfOfferModal
                     setPdfModal={setPdfModal}
                 />
             }
