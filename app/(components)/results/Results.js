@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import abarth from '@/public/images/abarth.jpg'
 import Image from 'next/image'
-import pdfOfferModal from '../modal/pdfOfferModal/pdfOfferModal'
+import pdfOfferModal from '@/app/(components)/modal/pdfOfferModal/pdfOfferModal'
 
 
 export default function Results() {
