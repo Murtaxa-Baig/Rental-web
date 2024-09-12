@@ -11,7 +11,7 @@ export default function page() {
                 <h1 className='font-bold text-3xl text-gray-500'>Invoices
                 </h1>
                 <p className='text-gray-500'>
-                    <Link href="/" className='text-blue-700'>Home</Link> /Invoices
+                    <Link href="/" className='text-blue-700'>Home</Link> / Invoices
                 </p>
             </div>
             <div className='py-4 bg-white w-full rounded-md'>
