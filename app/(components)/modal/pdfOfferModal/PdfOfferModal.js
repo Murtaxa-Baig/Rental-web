@@ -9,7 +9,6 @@ export default function PdfOfferModal({ setPdfModal }) {
         <>
 
             <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-10"></div>
-
             {/* Modal */}
             <div className="fixed inset-0 z-20 flex items-center justify-center">
                 <div className="w-[50%] p-3 h-[55vh] rounded-lg bg-white shadow-lg ">
