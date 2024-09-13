@@ -37,7 +37,7 @@ export default function Navbar() {
                     <div className="flex items-center space-x-4">
                         <div className="text-white font-bold text-lg">
                             <Link href='/'>
-                                Rental Web
+                                Buraak
                             </Link>
                         </div>
                         <div className="hidden md:flex space-x-4">
@@ -270,7 +270,7 @@ export default function Navbar() {
                                         Setting
                                     </div>
                                 </Link>
-                                <hr className='text-gray-500'  />
+                                <hr className='text-gray-500' />
                                 <div className='w-full h-[20vh] text-center mt-3'>
                                     <Image src={profile} width={100} height={100} className="rounded-full mx-auto" alt="Profile Picture" />
                                     <p className='font-bold text-center mt-4'>Company Name</p>
