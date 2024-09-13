@@ -177,7 +177,7 @@ export default function AddClient() {
                         />
                     </div>
                 </div>
-                <p className='font-bold text-gray-400 my-3'>Here you can decide if the client is your own or if it's agency's client</p>
+                <p className='font-bold text-gray-400 my-3'>Here you can decide if the client is your own or if its agencys client</p>
 
                 <div className="grid grid-cols-1 mt-5 sm:grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-4">
                     <div className="md:col-span-1 lg:col-span-1 w-full flex items-center border-2 p-2 rounded-md h-14">
@@ -187,7 +187,7 @@ export default function AddClient() {
                             checked={formData.is_own_client}
                             onChange={() => setFormData({ ...formData, is_own_client: true })}
                         />
-                        <p className="font-bold text-gray-500 ml-2">It's own client</p>
+                        <p className="font-bold text-gray-500 ml-2">Its own client</p>
                     </div>
                     <div className="md:col-span-3 lg:col-span-3 w-full relative h-14">
                         <label className="absolute -top-3 left-3 font-bold bg-white px-1 text-[12px] text-gray-600">
