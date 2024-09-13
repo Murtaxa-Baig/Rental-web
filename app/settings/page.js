@@ -68,7 +68,7 @@ export default function Page() {
 
             <div className='py-4 bg-white w-full rounded-md flex'>
                 {/* Sidebar */}
-                <div className={`fixed inset-0  bg-white w-3/4 p-4 md:w-1/5 md:relative md:block ${sidebarOpen ? 'block' : 'hidden'} md:flex md:flex-col rounded-md`}>
+                <div className={`fixed inset-0  bg-white w-3/4 p-4 md:w-1/5 md:relative md:block ${sidebarOpen ? 'block z-10' : 'hidden'} md:flex md:flex-col rounded-md`}>
                     <ul>
                         {sidebarItems.map((tab) => (
                             <li

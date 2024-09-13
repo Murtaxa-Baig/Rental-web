@@ -1,6 +1,5 @@
 'use client';
 import React, { useState } from 'react';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Link from 'next/link';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';

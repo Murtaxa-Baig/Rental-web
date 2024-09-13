@@ -3,12 +3,12 @@ import React from 'react'
 import Switch from 'react-switch';
 import { useState } from 'react';
 
-export default function Additional() {
+export default function Additional({ formData, handleChange }) {
 
     const [checked, setChecked] = useState(false);
 
 
-    const handleChange = (nextChecked) => {
+    const handleChanges = (nextChecked) => {
         setChecked(nextChecked);
     };
     return (
@@ -38,7 +38,7 @@ export default function Additional() {
             <div className='flex items-center my-3'>
                 <span className='font-bold text-gray-600'>Actual problems</span>
                 <Switch
-                    onChange={handleChange}
+                    onChange={handleChanges}
                     checked={checked}
                     offColor="#888"
                     onColor="#3464eb"

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function SeasonMatrix() {
+export default function SeasonMatrix({ formData, handleChange }) {
     return (
         <>
             <p className='text-gray-700'>Select seasons (rates) applyed to vehicle</p>
@@ -10,6 +10,9 @@ export default function SeasonMatrix() {
                     Tariff name
                 </label>
                 <input
+                    name='tariff_name'
+                    value={formData.tariff_name}
+                    onChange={handleChange}
                     type="text"
                     className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none"
                 />

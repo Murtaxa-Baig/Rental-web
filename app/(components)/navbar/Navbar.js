@@ -114,12 +114,6 @@ export default function Navbar() {
                                     href="#"
                                     className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                                 >
-                                    Billing
-                                </a>
-                                <a
-                                    href="#"
-                                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                                >
                                     Logout
                                 </a>
                             </div>

@@ -1,20 +1,90 @@
+
 'use client'
-import React, { useState } from 'react'
-import service from '@/public/images/service.svg'
-import Image from 'next/image'
-import AddNewCompany from '../modal/addNewCompany/AddNewCompany'
+import React, { useState } from 'react';
+import service from '@/public/images/service.svg';
+import Image from 'next/image';
+import AddNewCompany from '../modal/addNewCompany/AddNewCompany';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
-import Perameter from '../ui/perameter/Perameter'
-import Excess from '../ui/excess/Excess'
-import Tariffs from '../ui/tariffs/Tariffs'
-import SeasonMatrix from '../ui/seasonMatrix/SeasonMatrix'
-import Additional from '../ui/additional/Additional'
-import Documents from '../ui/documents/Documents'
+import Perameter from '../ui/perameter/Perameter';
+import Excess from '../ui/excess/Excess';
+import Tariffs from '../ui/tariffs/Tariffs';
+import SeasonMatrix from '../ui/seasonMatrix/SeasonMatrix';
+import Additional from '../ui/additional/Additional';
+import Documents from '../ui/documents/Documents';
 
 export default function VehicleInformation() {
-
-    const [isShowModal, setIsShowModal] = useState(false)
+    const [isShowModal, setIsShowModal] = useState(false);
     const [activeIndex, setActiveIndex] = useState(null);
+    const [formData, setFormData] = useState({
+        vehicle_type: "",
+        brand: "",
+        model: "",
+        plate_number: "",
+        year_of_issue: null,
+        base_location: "",
+        odometer: null,
+        passengers: null,
+        transmission: "",
+        fuel_type: "",
+        base_kilometers_per_day: null,
+        unlimited_km: null,
+        color: "",
+        max_speed: null,
+        basic_daily_price: null,
+        km_extra_price: null,
+        deposit: null,
+        excess: null,
+        excess_percentage: null,
+        excess_theft: null,
+        excess_damage: null,
+        excess_kasco: null,
+        tariff_name: "",
+        daily_price: null,
+        km_extra_price_tariff: null,
+        from_days: null,
+        to_days: null,
+        unlimited_kilometers: false,
+        ownership: "",
+        image: null
+    });
+
+    const handleChange = (e) => {
+        const { name, value, type, checked, files } = e.target;
+
+        setFormData(prevData => ({
+            ...prevData,
+            [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const formDataToSubmit = new FormData();
+
+            Object.keys(formData).forEach((key) => {
+                formDataToSubmit.append(key, formData[key]);
+            });
+
+            const response = await fetch('https://cc93-43-248-15-56.ngrok-free.app/owner/vehicles/?uploaded_images', {
+                method: 'POST',
+                body: formDataToSubmit
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit data');
+            }
+
+            const data = await response.json();
+            console.log('Success:', data);
+            // Optionally reset the form or perform any additional actions
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+
     const toggleAccordion = (index) => {
         setActiveIndex(activeIndex === index ? null : index);
     };
@@ -41,33 +111,54 @@ export default function VehicleInformation() {
     const accordionData = [
         {
             title: 'Perameter',
-            content: <Perameter />
+            content: <Perameter
+                formData={formData}
+                handleChange={handleChange}
+            />
         },
         {
             title: 'Excess',
-            content: <Excess />
+            content: <Excess
+                formData={formData}
+                handleChange={handleChange}
+            />
         },
         {
             title: 'Tariffs',
-            content: <Tariffs />
+            content: <Tariffs
+                formData={formData}
+                handleChange={handleChange}
+            />
         },
         {
             title: 'Season matrix',
-            content: <SeasonMatrix />
+            content: <SeasonMatrix
+                formData={formData}
+                handleChange={handleChange}
+            />
         },
         {
             title: 'Additional',
-            content: <Additional />
+            content: <Additional
+                formData={formData}
+                handleChange={handleChange}
+            />
         },
         {
             title: 'Documents',
-            content: <Documents />
+            content: <Documents
+                formData={formData}
+                handleChange={handleChange}
+            />
         },
     ];
 
+
+    console.log("Data form",formData);
+    
     return (
         <>
-            <form action="" onSubmit={(e) => e.preventDefault()}>
+            <form onSubmit={handleSubmit}>
                 <div className="flex flex-col md:flex-row items-center w-full">
                     <div className='w-full md:w-[20%]'>
                         <div className="border-[1px] border-cyan-400 h-[125px] w-[125px] rounded-full flex justify-center items-center mx-auto">
@@ -80,7 +171,8 @@ export default function VehicleInformation() {
                                 <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
                                     Vehicle type
                                 </label>
-                                <select name="" id="" className='w-full p-2 text-gray-500 rounded-md border-2 border-gray-300 outline-none'>
+                                <select name="vehicle_type" value={formData.vehicle_type}
+                                    onChange={handleChange} id="" className='w-full p-2 text-gray-500 rounded-md border-2 border-gray-300 outline-none'>
                                     {vehicleType.map((item, index) => (
                                         <option key={index} value={item}>{item}</option>
                                     ))}
@@ -90,7 +182,10 @@ export default function VehicleInformation() {
                                 <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
                                     Brand
                                 </label>
-                                <select name="" id="" className='w-full p-2 text-gray-500 rounded-md border-2 border-gray-300 outline-none'>
+                                <select
+                                    value={formData.brand}
+                                    onChange={handleChange}
+                                    name="brand" id="" className='w-full p-2 text-gray-500 rounded-md border-2 border-gray-300 outline-none'>
                                     {brand.map((item, index) => (
                                         <option key={index} value={item}>{item}</option>
                                     ))}
@@ -100,7 +195,10 @@ export default function VehicleInformation() {
                                 <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
                                     Model
                                 </label>
-                                <select name="" id="" className='w-full p-2 text-gray-500 rounded-md border-2 border-gray-300 outline-none'>
+                                <select
+                                    value={formData.model}
+                                    onChange={handleChange}
+                                    name="model" id="" className='w-full p-2 text-gray-500 rounded-md border-2 border-gray-300 outline-none'>
                                     {model.map((item, index) => (
                                         <option key={index} value={item}>{item}</option>
                                     ))}
@@ -125,7 +223,10 @@ export default function VehicleInformation() {
                                 </label>
 
                                 <input
+                                    name='year_of_issue'
                                     type="text"
+                                    value={formData.year_of_issue}
+                                    onChange={handleChange}
                                     className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none"
                                 />
                             </div>
@@ -135,6 +236,9 @@ export default function VehicleInformation() {
                                 </label>
 
                                 <input
+                                    name='plate_number'
+                                    value={formData.plate_number}
+                                    onChange={handleChange}
                                     type="text"
                                     className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none"
                                 />
@@ -148,6 +252,9 @@ export default function VehicleInformation() {
                                     Base location
                                 </label>
                                 <input
+                                    name='base_location'
+                                    value={formData.base_location}
+                                    onChange={handleChange}
                                     type="text"
                                     className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
@@ -157,6 +264,9 @@ export default function VehicleInformation() {
                                     Link of offices
                                 </label>
                                 <input
+
+                                    // value={formData.}
+                                    // onChange={handleChange}
                                     type="text"
                                     className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />

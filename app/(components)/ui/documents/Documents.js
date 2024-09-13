@@ -4,7 +4,7 @@ import Image from 'next/image'
 import document from '@/public/images/document.svg'
 import AddDocumentModal from '../../modal/addDocumentModal/AddDocumentModal'
 
-export default function Documents() {
+export default function Documents({ formData, handleChange }) {
 
     const [isShowModal, setIsShowModal] = useState(false)
 
