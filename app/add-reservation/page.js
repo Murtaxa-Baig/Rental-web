@@ -10,6 +10,7 @@ import service from '@/public/images/service.svg'
 import file from '@/public/images/file.svg'
 import Switch from 'react-switch';
 import { useState, useEffect } from 'react'
+import NewCarModal from '../(components)/modal/newCarModal/NewCarModal';
 
 
 export default function Page() {
@@ -17,6 +18,7 @@ export default function Page() {
     const [selectColor, setSelectColor] = useState('text-orange-600');
     const [formDate, setFormDate] = useState('');
     const [untilDate, setUntilDate] = useState('');
+    const [showNewCarModal, setShowNewCarModal] = useState(false)
 
     useEffect(() => {
         const dateObj = new Date();
@@ -211,7 +213,7 @@ export default function Page() {
                                         alt="Filter Icon"
                                     />
                                 </button>
-                                <Link href='/add-reservation'
+                                <button onClick={() => setShowNewCarModal(true)}
                                     className='border-[1px] h-14 px-3 rounded-md shadow-lg text-blue-600 font-bold flex items-center justify-center hover:bg-blue-100 w-full md:w-auto'>
                                     <Image
                                         src={add}
@@ -221,9 +223,14 @@ export default function Page() {
                                         alt="Add Icon"
                                     />
                                     New car
-                                </Link>
+                                </button>
                             </div>
                         </div>
+                        {
+                            showNewCarModal && <NewCarModal
+                                setShowNewCarModal={setShowNewCarModal}
+                            />
+                        }
 
                         <div className='flex items-center justify-center mt-2'>
                             <p className='text-[14px] text-gray-600 mx-2'>Own cars</p>
