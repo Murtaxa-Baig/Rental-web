@@ -100,7 +100,7 @@ export default function PdfOfferModal({ setPdfModal }) {
                                         Start address
                                     </label>
                                     <Autocomplete
-                                        apiKey="API_KEY"
+                                        apiKey="AIzaSyBBGxKE3abRfU_ZsgC6JmiIIUpO5QmaTjI"
                                         onPlaceSelected={StartLocationSelected}
                                         value={startLocation}
                                         onChange={(e) => setStartLocation(e.target.value)}
@@ -121,7 +121,7 @@ export default function PdfOfferModal({ setPdfModal }) {
                                         End address
                                     </label>
                                     <Autocomplete
-                                        apiKey="API_KEY"
+                                        apiKey="AIzaSyBBGxKE3abRfU_ZsgC6JmiIIUpO5QmaTjI"
                                         onPlaceSelected={EndLocationSelected}
                                         value={endLocation}
                                         onChange={(e) => setEndLocation(e.target.value)}

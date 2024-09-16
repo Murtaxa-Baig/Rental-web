@@ -318,7 +318,7 @@ export default function AddClient() {
                 <div className='flex justify-end mt-5'>
                     <button
                         type="submit"
-                        className='bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600'
+                        className='bg-blue-500 text-white p-2 w-[20%] rounded-md hover:bg-blue-600'
                     >
                         Save
                     </button>
