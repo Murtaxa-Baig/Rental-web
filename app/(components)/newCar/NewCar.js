@@ -6,15 +6,131 @@ import Damages from '../damages/Damages';
 export default function NewCar() {
 
     const [activeTab, setActiveTab] = useState('Vehicle information');
+    const [formData, setFormData] = useState({
+        vehicle_type: "",
+        brand: "",
+        model: "",
+        plate_number: "",
+        year_of_issue: null,
+        base_location: "",
+        odometer: null,
+        passengers: null,
+        transmission: "",
+        fuel_type: "",
+        base_kilometers_per_day: null,
+        unlimited_km: null,
+        color: "",
+        max_speed: null,
+        basic_daily_price: null,
+        km_extra_price: null,
+        deposit: null,
+        excess: null,
+        excess_percentage: null,
+        excess_theft: null,
+        excess_damage: null,
+        excess_kasco: null,
+        tariff_name: "",
+        daily_price: null,
+        km_extra_price_tariff: null,
+        from_days: null,
+        to_days: null,
+        unlimited_kilometers: false,
+        ownership: "",
+        images: null
+    });
+
+
+
+    const handleChange = (e) => {
+        const { name, type, files, checked, value } = e.target;
+
+        if (type === 'file' && name === 'images') {
+            setFormData(prevData => ({
+                ...prevData,
+                images: [
+                    ...(prevData.images || []),
+                    ...Array.from(files).filter(file =>
+                        !(prevData.images || []).some(existingFile => existingFile.name === file.name)
+                    )
+                ]
+            }));
+        } else {
+            setFormData(prevData => ({
+                ...prevData,
+                [name]: type === 'checkbox' ? checked : value
+            }));
+        }
+    };
+
+    const handleRemoveImage = (index) => {
+        setFormData(prevData => ({
+            ...prevData,
+            images: prevData.images.filter((_, i) => i !== index)
+        }));
+    };
+
+
+
+
+    // const handleChange = (e) => {
+    //     const { name, value, type, checked, files } = e.target;
+
+    //     setFormData(prevData => ({
+    //         ...prevData,
+    //         [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value
+    //     }));
+    // };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const formDataToSubmit = new FormData();
+
+            Object.keys(formData).forEach((key) => {
+                if (key === 'images') {
+                    formData[key].forEach((file, i) => {
+                        formDataToSubmit.append(`image_${i}`, file);
+                    });
+                } else {
+                    formDataToSubmit.append(key, formData[key]);
+                }
+            });
+
+            const response = await fetch('https://5a80-154-80-14-181.ngrok-free.app/owner/vehicles/', {
+                method: 'POST',
+                body: formDataToSubmit
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit data');
+            }
+
+            const data = await response.json();
+            console.log('Success:', data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
     const renderContent = () => {
         switch (activeTab) {
             case 'Vehicle information':
-                return <VehicleInformation />;
+                return <VehicleInformation
+                    handleChange={handleChange}
+                    formData={formData}
+                />;
             case 'Add Images':
-                return <AddVehicleImages />;
+                return <AddVehicleImages
+                    handleChange={handleChange}
+                    formData={formData}
+                    handleRemoveImage={handleRemoveImage}
+                />;
             case 'Damages':
-                return <Damages />;
+                return <Damages
+                    handleChange={handleChange}
+                    formData={formData}
+                />;
             default:
                 return null;
         }
@@ -50,6 +166,14 @@ export default function NewCar() {
 
                             <div className="mt-4">
                                 {renderContent()}
+                                <div className='flex items-center justify-start gap-4 mt-8 flex-col sm:flex-row'>
+                                    <button className='flex items-center justify-center border-[1px] w-full sm:w-[20%] border-blue-500 rounded-md font-bold text-blue-500 cursor-pointer p-2'>
+                                        Cancel
+                                    </button>
+                                    <button onClick={handleSubmit} className='flex items-center justify-center text-white w-full sm:w-[20%] bg-blue-500 rounded-md font-bold cursor-pointer p-2 mt-2 sm:mt-0'>
+                                        Add vehicle
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

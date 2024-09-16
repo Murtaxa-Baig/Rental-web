@@ -7,13 +7,13 @@ import exterior from '@/public/images/exterior.svg'
 import { useState } from 'react';
 import AddDamageModal from '../modal/addDamageModal/AddDamageModal';
 
-export default function Damages() {
+export default function Damages({ handleChange, formData }) {
 
     const [checked, setChecked] = useState(false);
     const [showModal,setShowModal] = useState(false)
 
 
-    const handleChange = (nextChecked) => {
+    const handleChanges = (nextChecked) => {
         setChecked(nextChecked);
     };
 
@@ -22,7 +22,7 @@ export default function Damages() {
             <div className="md:w-[40%] sm:w-full flex items-center mb-10 justify-center">
                 <p className={`${checked ? 'text-gray-500' : 'font-bold text-gray-600'}`}>Exterior</p>
                 <Switch
-                    onChange={handleChange}
+                    onChange={handleChanges}
                     checked={checked}
                     offColor="#888"
                     onColor="#3464eb"

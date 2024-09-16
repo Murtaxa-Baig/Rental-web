@@ -1,121 +1,231 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import service from '@/public/images/service.svg'
 import Image from 'next/image'
-import { useState } from 'react'
 import AddNewCompany from '../modal/addNewCompany/AddNewCompany'
 
 export default function AddStaffDriver() {
-
     const [isShowModal, setIsShowModal] = useState(false)
     const [isNextPart, setIsNextPart] = useState(false)
 
-
+    const [formData, setFormData] = useState({
+        name: '',
+        surname: '',
+        email: '',
+        phone_number: '',
+        address: '',
+        date_of_birth: '',
+        driving_license_number: '',
+        driving_license_issue_date: '',
+        driving_license_expiry_date: '',
+        driving_license_scan: null,
+        passport_number: '',
+        passport_issue_date: '',
+        passport_expiry_date: '',
+        passport_scan: null,
+        company_link: '',
+        role: ''
+    })
 
     const array = ['English', 'Russian', 'Italian', 'German', 'French', 'Portuguese', 'Spanish', 'Polish', 'Chinese', 'Dutch', 'Czech']
-    const role = ['Driver', 'Oprater', 'Partner']
+    const role = ['Driver', 'Operator', 'Partner']
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target
+        setFormData(prevData => ({
+            ...prevData,
+            [name]: value
+        }))
+    }
+
+    const handleFileChange = (e) => {
+        const { name, files } = e.target
+        setFormData(prevData => ({
+            ...prevData,
+            [name]: files[0] || null
+        }))
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        const data = new FormData()
+        for (const key in formData) {
+            data.append(key, formData[key])
+        }
+
+        try {
+            const response = await fetch(`https://5a80-154-80-14-181.ngrok-free.app/owner/staff-drivers/`, {
+                method: 'POST',
+                body: data
+            })
+
+            if (response.ok) {
+                console.log('Staff driver created successfully')
+                setFormData({
+                    name: '',
+                    surname: '',
+                    email: '',
+                    phone_number: '',
+                    address: '',
+                    date_of_birth: '',
+                    driving_license_number: '',
+                    driving_license_issue_date: '',
+                    driving_license_expiry_date: '',
+                    driving_license_scan: null,
+                    passport_number: '',
+                    passport_issue_date: '',
+                    passport_expiry_date: '',
+                    passport_scan: null,
+                    company_link: '',
+                    role: ''
+                })
+                setIsNextPart(false)
+                // Reset form or handle successful submission
+            } else {
+                console.log('Failed to create staff driver')
+                // Handle error
+            }
+        } catch (error) {
+            console.error('Error:', error)
+        }
+    }
+
     return (
         <>
-
-            <form action="" onSubmit={(e) => e.preventDefault()}>
-                {isNextPart ? (<>
-                    <p className='font-bold text-gray-600 text-[20px]'>Documents</p>
-                    <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-8">
-                        <div className="relative w-full md:w-[49%] mb-4 md:mb-0">
-                            <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                                Driving license
-                            </label>
-                            <input
-                                type="text"
-                                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                        <div className="relative w-full md:w-[49%]">
-                            <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                                Passport
-                            </label>
-                            <input
-                                type="text"
-                                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-8">
-                        <div className="relative w-full md:w-[49%] mb-4 md:mb-0">
-                            <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                                Issue date
-                            </label>
-                            <input
-                                type="date"
-                                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                        <div className="relative w-full md:w-[49%]">
-                            <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                                Date of issue
-                            </label>
-                            <input
-                                type="date"
-                                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-8">
-                        <div className="relative w-full md:w-[49%] mb-4 md:mb-0">
-                            <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                                Valid until date
-                            </label>
-                            <input
-                                type="date"
-                                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                        <div className="relative w-full md:w-[49%]">
-                            <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                                Valid until date
-                            </label>
-                            <input
-                                type="date"
-                                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                    </div>
-
-                    <p className='text-gray-500 text-xs my-5'>Here you can attach <span className='font-bold text-gray-600'>driving license scans</span> as well as <span className='font-bold text-gray-600'>customer passport scans</span></p>
-
-
-                    <div className='w-full md:w-[49%] '>
-                        <label for='uploadScan' className="text-blue-500 font-bold mb-4 border-[1px] rounded-md border-blue-500 p-2">
-                            Upload scan
-                            <input type="file" accept="image/*" id='uploadScan' className='hidden' />
-                        </label>
-                    </div>
-
-
-
-                    <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-8">
-                        <div className="w-full md:w-[49%] mb-4 md:mb-0">
-
-                        </div>
-                        <div className='w-full md:w-[49%] flex items-center  gap-2  my-5'>
-                            <button
-                                onClick={() => { setIsNextPart(false) }}
-                                className='w-[49%] border-[1px] border-blue-500 rounded-md font-bold text-blue-500 p-2'>
-                                Back
-                            </button>
-                            <button className='w-[49%]  rounded-md font-bold text-white bg-blue-500 p-2'>
-                                Create staff
-                            </button>
-                        </div>
-                    </div>
-
-
-
-                </>) : (
+            <form onSubmit={handleSubmit}>
+                {isNextPart ? (
                     <>
-                        <p className='font-bold text-gray-600 text-[20px]'>Base info</p >
+                        <p className='font-bold text-gray-600 text-[20px]'>Documents</p>
+                        <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-8">
+                            <div className="relative w-full md:w-[49%] mb-4 md:mb-0">
+                                <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
+                                    Driving license
+                                </label>
+                                <input
+                                    type="text"
+                                    name="driving_license_number"
+                                    value={formData.driving_license_number}
+                                    onChange={handleInputChange}
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div className="relative w-full md:w-[49%]">
+                                <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
+                                    Passport
+                                </label>
+                                <input
+                                    type="text"
+                                    name="passport_number"
+                                    value={formData.passport_number}
+                                    onChange={handleInputChange}
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-8">
+                            <div className="relative w-full md:w-[49%] mb-4 md:mb-0">
+                                <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
+                                    Issue date driving license
+                                </label>
+                                <input
+                                    type="date"
+                                    name="driving_license_issue_date"
+                                    value={formData.driving_license_issue_date}
+                                    onChange={handleInputChange}
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div className="relative w-full md:w-[49%]">
+                                <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
+                                    Date of issue passport
+                                </label>
+                                <input
+                                    type="date"
+                                    name="passport_issue_date"
+                                    value={formData.passport_issue_date}
+                                    onChange={handleInputChange}
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-8">
+                            <div className="relative w-full md:w-[49%] mb-4 md:mb-0">
+                                <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
+                                    Valid until date of driving license
+                                </label>
+                                <input
+                                    type="date"
+                                    name="driving_license_expiry_date"
+                                    value={formData.driving_license_expiry_date}
+                                    onChange={handleInputChange}
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div className="relative w-full md:w-[49%]">
+                                <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
+                                    Valid until date of passport
+                                </label>
+                                <input
+                                    type="date"
+                                    name="passport_expiry_date"
+                                    value={formData.passport_expiry_date}
+                                    onChange={handleInputChange}
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                        </div>
+
+                        <p className='text-gray-500 text-xs my-5'>Here you can attach <span className='font-bold text-gray-600'>driving license scans</span> as well as <span className='font-bold text-gray-600'>customer passport scans</span></p>
+
+                        <div className='w-full md:w-[49%] my-2'>
+                            <label htmlFor='drivingLicenseScan' className="text-blue-500 font-bold mb-4 border-[1px] rounded-md border-blue-500 p-2">
+                                Upload driving license scan
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    id='drivingLicenseScan'
+                                    name='driving_license_scan'
+                                    className='hidden'
+                                    onChange={handleFileChange}
+                                />
+                            </label>
+                        </div>
+
+                        <div className='w-full md:w-[49%] mt-7'>
+                            <label htmlFor='passportScan' className="text-blue-500 font-bold mb-4 border-[1px] rounded-md border-blue-500 p-2">
+                                Upload passport scan
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    id='passportScan'
+                                    name='passport_scan'
+                                    className='hidden'
+                                    onChange={handleFileChange}
+                                />
+                            </label>
+                        </div>
+
+                        <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-8">
+                            <div className="w-full md:w-[49%] mb-4 md:mb-0"></div>
+                            <div className='w-full md:w-[49%] flex items-center gap-2 my-5'>
+                                <button
+                                    onClick={() => { setIsNextPart(false) }}
+                                    className='w-[49%] border-[1px] border-blue-500 rounded-md font-bold text-blue-500 p-2'>
+                                    Back
+                                </button>
+                                <button type='submit' className='w-[49%] rounded-md font-bold text-white bg-blue-500 p-2'>
+                                    Create staff
+                                </button>
+                            </div>
+                        </div>
+
+                    </>
+                ) : (
+                    <>
+                        <p className='font-bold text-gray-600 text-[20px]'>Base info</p>
                         <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-8">
                             <div className="relative w-full md:w-[49%] mb-4 md:mb-0">
                                 <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
@@ -123,6 +233,9 @@ export default function AddStaffDriver() {
                                 </label>
                                 <input
                                     type="text"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleInputChange}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
@@ -132,6 +245,9 @@ export default function AddStaffDriver() {
                                 </label>
                                 <input
                                     type="text"
+                                    name="surname"
+                                    value={formData.surname}
+                                    onChange={handleInputChange}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
@@ -140,10 +256,13 @@ export default function AddStaffDriver() {
                         <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-8">
                             <div className="relative w-full md:w-[49%] mb-4 md:mb-0">
                                 <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                                    Phone
+                                    Phone number
                                 </label>
                                 <input
-                                    type="text"
+                                    type="tel"
+                                    name="phone_number"
+                                    value={formData.phone_number}
+                                    onChange={handleInputChange}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
@@ -153,99 +272,87 @@ export default function AddStaffDriver() {
                                 </label>
                                 <input
                                     type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
                         </div>
-                        <div className="relative w-full md:w-[49%] mt-8">
+
+                        <div className="relative w-full mt-8">
                             <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                                Language
+                                Address
                             </label>
-                            <select name="" id="" className='w-full p-2 text-gray-500 rounded-md border-[1px] border-gray-400 outline-none'>
-                                {
-                                    array.map((item, index) => {
-                                        return <option key={index} value={item}>{item}</option>
-                                    }
-                                    )
-                                }
+                            <input
+                                type="text"
+                                name="address"
+                                value={formData.address}
+                                onChange={handleInputChange}
+                                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+
+                        <div className="relative w-full mt-8">
+                            <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
+                                Date of birth
+                            </label>
+                            <input
+                                type="date"
+                                name="date_of_birth"
+                                value={formData.date_of_birth}
+                                onChange={handleInputChange}
+                                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+
+                        <div className="relative w-full mt-8">
+                            <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
+                                Company
+                            </label>
+                            <select
+                                name="company_link"
+                                value={formData.company_link}
+                                onChange={handleInputChange}
+                                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                                <option value="">Select company</option>
+                                {/* Map through your companies array if available */}
                             </select>
                         </div>
 
-                        <div className="w-full flex items-center flex-col md:flex-row md:items-center md:justify-between mt-8">
-                            <div className="relative w-full md:w-[49%] mb-4 md:mb-0">
-                                <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
-                                    <div className='flex items-center gap-3'>
-                                        <input type="checkbox" id='accessGranted' className='h-4 w-4' />
-                                        <label htmlFor="accessGranted" className='text-gray-400'>Access granted</label>
-                                    </div>
-                                    <div className='flex items-center gap-3'>
-                                        <input type="checkbox" id='showBilling' className='h-4 w-4' />
-                                        <label htmlFor="showBilling" className='text-gray-400'>Show billing</label>
-                                    </div>
-                                    <div className='flex items-center gap-3'>
-                                        <input type="checkbox" id='showContacts' className='h-4 w-4' />
-                                        <label htmlFor="showContacts" className='text-gray-400'>Show contacts</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="relative w-full md:w-[49%] mt-8">
-                                <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                                    Role
-                                </label>
-                                <select name="" id="" className='w-full p-2 text-gray-500 rounded-md border-[1px] border-gray-400 outline-none'>
-                                    {
-                                        role.map((item, index) => (
-                                            <option key={index} value={item}>{item}</option>
-                                        ))
-                                    }
-                                </select>
-                            </div>
+                        <div className="relative w-full mt-8">
+                            <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
+                                Role
+                            </label>
+                            <select
+                                name="role"
+                                value={formData.role}
+                                onChange={handleInputChange}
+                                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                                <option value="">Select role</option>
+                                {role.map((r, index) => (
+                                    <option key={index} value={r}>{r}</option>
+                                ))}
+                            </select>
                         </div>
 
-                        <div className="grid grid-cols-1 mt-5 sm:grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-4">
-                            <div className="md:col-span-3 lg:col-span-3 w-full relative h-14">
-                                <label className="absolute -top-3 left-3 font-bold bg-white px-1 text-[12px] text-gray-600">
-                                    Link to company
-                                </label>
-                                <input
-                                    type="text"
-                                    placeholder=''
-                                    className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none h-full"
-                                />
-                            </div>
-                            <div className="md:col-span-1 lg:col-span-1 w-full flex items-center border-2 p-2 rounded-md h-14">
+                        <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-8">
+                            <div className='w-full md:w-[49%] flex items-center gap-2 my-5'>
                                 <button
-                                    onClick={() => { setIsShowModal(true) }}
-                                    className='w-full  rounded-[4px] p-2 font-bold text-gray-500 flex items-center h-full'>
-                                    <Image
-                                        src={service}
-                                        width={20}
-                                        height={20}
-                                        className='mr-2'
-                                        alt="Filter Icon"
-                                    />
-                                    Add new company
+                                    type='button'
+                                    onClick={() => { setIsNextPart(true) }}
+                                    className='w-[49%] rounded-md font-bold text-white bg-blue-500 p-2'>
+                                    Next
                                 </button>
                             </div>
                         </div>
-
-                        {
-                            isShowModal && <AddNewCompany
-                                setIsShowModal={setIsShowModal}
-                            />
-                        }
-
-                        <div className='flex items-center justify-end gap-4 flex-col sm:flex-row mt-8'>
-                            <button
-                                onClick={() => setIsNextPart(true)}
-                                className='flex items-center justify-center text-white w-full sm:w-[20%] bg-blue-500 rounded-md font-bold cursor-pointer p-2 mt-2 sm:mt-0'>
-                                Next
-                            </button>
-                        </div>
                     </>
-                )
-                }
+                )}
             </form>
+
+            {isShowModal && <AddNewCompany setIsShowModal={setIsShowModal} />}
         </>
     )
 }

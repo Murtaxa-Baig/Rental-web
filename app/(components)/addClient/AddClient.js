@@ -45,17 +45,18 @@ export default function AddClient() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("FORM DATA S HERE",formData);
-        
+        console.log("FORM DATA S HERE", formData);
+
         const backendUrl = process.env.BACKEND_URL;
 
         const formDataToSend = new FormData();
         for (const key in formData) {
             formDataToSend.append(key, formData[key]);
         }
+        const bacendUrl = process.env.BACKEND_URL
 
         try {
-            const response = await fetch('https://cc93-43-248-15-56.ngrok-free.app/owner/create-client/', {
+            const response = await fetch(`https://5a80-154-80-14-181.ngrok-free.app/owner/create-client/`, {
                 method: 'POST',
                 body: formDataToSend,
             });
@@ -63,6 +64,25 @@ export default function AddClient() {
             if (response.ok) {
                 const result = await response.json();
                 console.log('Client created successfully:', result);
+                setFormData({
+                    client_name: "",
+                    client_surname: "",
+                    birth_date: "",
+                    birth_place: "",
+                    language: "EN",
+                    phone_number: "",
+                    email: "",
+                    address: "",
+                    is_own_client: false,
+                    is_vip_client: false,
+                    is_blacklisted: false,
+                    driver_license_serial: "",
+                    driver_license_category: "",
+                    driver_license_valid_until: "",
+                    passport_serial: "",
+                    passport_valid_until: "",
+                    image: null,  // Added image field
+                });
                 // Handle success (e.g., redirect or show a success message)
             } else {
                 console.error('Failed to create client:', response.statusText);
