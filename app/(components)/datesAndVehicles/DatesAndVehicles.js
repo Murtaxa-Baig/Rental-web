@@ -59,7 +59,7 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
         const response = await fetch(`${backendUrl}/owner/vehicles/`);
         const result = await response.json();
         setVehicles(result);
-        console.log("Vehicles data is here", vehicles);
+        // console.log("Vehicles data is here", vehicles);
 
     };
 
