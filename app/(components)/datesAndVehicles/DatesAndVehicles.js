@@ -1,16 +1,16 @@
-import React from 'react'
-import Image from 'next/image'
-import filt from "@/public/images/filter.svg"
-import add from "@/public/images/add.svg"
+import React from 'react';
+import Image from 'next/image';
+import filt from "@/public/images/filter.svg";
+import add from "@/public/images/add.svg";
 import Switch from 'react-switch';
-import { useState } from 'react'
+import { useState } from 'react';
 import NewCarModal from '../modal/newCarModal/NewCarModal';
 import Autocomplete from 'react-google-autocomplete';
 
-
-export default function DatesAndVehicles({ startLocation, setStartLocation, returnLocation, setReturnLocation }) {
+export default function DatesAndVehicles({ startLocation, setStartLocation, returnLocation, setReturnLocation, formData, handleChange }) {
     const [checked, setChecked] = useState(false);
-    const [showNewCarModal, setShowNewCarModal] = useState(false)
+    const [showNewCarModal, setShowNewCarModal] = useState(false);
+    const [selectColor, setSelectColor] = useState('text-orange-600');
 
     const StartLocationSelected = (place) => {
         setStartLocation(place.formatted_address);
@@ -20,14 +20,51 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
         setReturnLocation(place.formatted_address);
     };
 
-
-
     const handleChanges = (nextChecked) => {
         setChecked(nextChecked);
     };
 
+    const handleColor = (event) => {
+        const value = event.target.value;
+        handleChange(event); // Update form state
+
+        switch (value) {
+            case 'REQUESTED':
+                setSelectColor('text-orange-600');
+                break;
+            case 'CONFIRMED':
+                setSelectColor('text-green-600');
+                break;
+            case 'MAINTAINENCE':
+                setSelectColor('text-gray-400');
+                break;
+            case 'COMPLETED':
+                setSelectColor('text-blue-600');
+                break;
+            case 'CANCELED':
+                setSelectColor('text-red-500');
+                break;
+            default:
+                setSelectColor('text-gray-600');
+        }
+    };
+
     return (
         <>
+            <select
+                id=""
+                className={`block md:hidden w-full my-5 border-[1px] border-gray-400 font-bold rounded-sm h-12 px-2 ${selectColor}`}
+                onChange={handleColor}
+                name="status"
+                value={formData.status}
+            >
+                <option value="REQUESTED" className='text-orange-500 font-bold'>REQUESTED</option>
+                <option value="CONFIRMED" className='text-green-600 font-bold'>CONFIRMED</option>
+                <option value="MAINTAINENCE" className='text-gray-400 font-bold'>MAINTAINENCE</option>
+                <option value="COMPLETED" className='text-blue-600 font-bold'>COMPLETED</option>
+                <option value="CANCELED" className='text-red-500 font-bold'>CANCELED</option>
+            </select>
+
             <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between">
                 <div className="w-full md:w-[49%] flex flex-col md:flex-row md:items-center md:justify-between">
                     <div className="relative w-full md:w-[60%] mb-4 md:mb-0">
@@ -35,6 +72,9 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
                             Start Date
                         </label>
                         <input
+                            name="start_date"
+                            value={formData.start_date} // Make sure `formData.start_date` is in `YYYY-MM-DD` format
+                            onChange={handleChange}
                             type="date"
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
@@ -44,6 +84,9 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
                             Start time
                         </label>
                         <input
+                            name="start_time"
+                            value={formData.start_time}
+                            onChange={handleChange}
                             type="time"
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
@@ -55,6 +98,9 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
                             End Date
                         </label>
                         <input
+                            name="end_date"
+                            value={formData.end_date} // Make sure `formData.end_date` is in `YYYY-MM-DD` format
+                            onChange={handleChange}
                             type="date"
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
@@ -64,14 +110,15 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
                             End time
                         </label>
                         <input
+                            name="end_time"
+                            value={formData.end_time}
+                            onChange={handleChange}
                             type="time"
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                 </div>
             </div>
-
-
 
             <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-4">
                 <div className="relative w-full md:w-[49%] mb-4 md:mb-0">
@@ -100,12 +147,13 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
                 </div>
             </div>
 
-
             <div className='flex flex-col mt-4 md:flex-row items-center md:justify-between'>
                 <input
                     type="text"
                     placeholder='Search Vehicle'
-                    className='w-full md:w-[72%]  p-3 border-[1px] border-black outline-none rounded-md h-14 mb-4 md:mb-0'
+                    className='w-full md:w-[72%] p-3 border-[1px] border-black outline-none rounded-md h-14 mb-4 md:mb-0'
+                    onChange={handleChange}
+                    name="search_vehicle"
                 />
                 <div className='flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4 w-full md:w-auto'>
                     <button className='border-[1px] h-14 px-3 rounded-md shadow-lg w-full md:w-auto flex justify-center items-center hover:bg-gray-200'>
@@ -130,11 +178,8 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
                     </button>
                 </div>
             </div>
-            {
-                showNewCarModal && <NewCarModal
-                    setShowNewCarModal={setShowNewCarModal}
-                />
-            }
+
+            {showNewCarModal && <NewCarModal setShowNewCarModal={setShowNewCarModal} />}
 
             <div className='flex items-center justify-center mt-2'>
                 <p className='text-[14px] text-gray-600 mx-2'>Own cars</p>
@@ -153,5 +198,5 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
 
 
         </>
-    )
+    );
 }
