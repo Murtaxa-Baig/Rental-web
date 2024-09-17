@@ -1,13 +1,14 @@
 'use client'
 import React, { useState } from 'react'
-import service from '@/public/images/service.svg'
-import Image from 'next/image'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AddNewCompany from '../modal/addNewCompany/AddNewCompany'
 
 export default function AddStaffDriver() {
     const [isShowModal, setIsShowModal] = useState(false)
     const [isNextPart, setIsNextPart] = useState(false)
-    const backendUrl= process.env.NEXT_PUBLIC_BACKEND_URL
+    const [loader, setLoader] = useState(false)
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
     const [formData, setFormData] = useState({
         name: '',
         surname: '',
@@ -48,6 +49,7 @@ export default function AddStaffDriver() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setLoader(true)
 
         const data = new FormData()
         for (const key in formData) {
@@ -81,18 +83,25 @@ export default function AddStaffDriver() {
                     role: ''
                 })
                 setIsNextPart(false)
-                // Reset form or handle successful submission
+                toast.success('Client added successfully.');
+                setLoader(false)
+
             } else {
                 console.log('Failed to create staff driver')
-                // Handle error
+                toast.error('Failed to create client. Please try again.');
+                setLoader(false)
             }
         } catch (error) {
             console.error('Error:', error)
+            toast.error('An error occurred. Please try again.');
+            setLoader(false)
+
         }
     }
 
     return (
         <>
+            <ToastContainer />
             <form onSubmit={handleSubmit}>
                 {isNextPart ? (
                     <>
@@ -154,7 +163,7 @@ export default function AddStaffDriver() {
                         <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-8">
                             <div className="relative w-full md:w-[49%] mb-4 md:mb-0">
                                 <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                                    Valid until date of driving license
+                                    Expiry date of driving license
                                 </label>
                                 <input
                                     type="date"
@@ -166,7 +175,7 @@ export default function AddStaffDriver() {
                             </div>
                             <div className="relative w-full md:w-[49%]">
                                 <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                                    Valid until date of passport
+                                    Expiry date of passport
                                 </label>
                                 <input
                                     type="date"
@@ -217,7 +226,7 @@ export default function AddStaffDriver() {
                                     Back
                                 </button>
                                 <button type='submit' className='w-[49%] rounded-md font-bold text-white bg-blue-500 p-2'>
-                                    Create staff
+                                    {loader ? 'Creating staff...' : 'Create staff'}
                                 </button>
                             </div>
                         </div>

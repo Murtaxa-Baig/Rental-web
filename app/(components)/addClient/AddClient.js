@@ -1,19 +1,18 @@
 'use client'
 import React, { useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
-import camera from '@/public/images/camera.svg'
 import user from '@/public/images/user.svg'
 import call from '@/public/images/call.svg'
 import mail from '@/public/images/mail.svg'
 import service from '@/public/images/service.svg'
-import upload from '@/public/images/upload.svg'
-import sad from '@/public/images/sad.svg'
 import AddNewCompany from '../modal/addNewCompany/AddNewCompany'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function AddClient() {
-    const backendUrl= process.env.NEXT_PUBLIC_BACKEND_URL
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
     const [isShowModal, setIsShowModal] = useState(false);
+    const [loader, setLoader] = useState(false)
     const [formData, setFormData] = useState({
         client_name: "",
         client_surname: "",
@@ -45,16 +44,15 @@ export default function AddClient() {
     };
 
     const handleSubmit = async (e) => {
+        setLoader(true)
         e.preventDefault();
         console.log("FORM DATA S HERE", formData);
 
-        const backendUrl = process.env.BACKEND_URL;
 
         const formDataToSend = new FormData();
         for (const key in formData) {
             formDataToSend.append(key, formData[key]);
         }
-        const bacendUrl = process.env.BACKEND_URL
 
         try {
             const response = await fetch(`${backendUrl}owner/create-client/`, {
@@ -82,20 +80,27 @@ export default function AddClient() {
                     driver_license_valid_until: "",
                     passport_serial: "",
                     passport_valid_until: "",
-                    image: null,  
+                    image: null,
                 });
-                
+                toast.success('Client added successfully.');
+                setLoader(false)
+
             } else {
                 console.error('Failed to create client:', response.statusText);
+                toast.error('Failed to create client. Please try again.');
+                setLoader(false)
 
             }
         } catch (error) {
             console.error('Error:', error);
+            toast.error('An error occurred. Please try again.');
+            setLoader(false)
         }
     };
 
     return (
         <>
+            <ToastContainer />
             <form onSubmit={handleSubmit}>
                 {/* <label htmlFor="image" className='w-full cursor-pointer bg-gray-200 flex justify-center items-center p-2'>
                     <input id='image' name='image' type="file" accept="image/*" className='hidden' onChange={handleChange} />
@@ -321,7 +326,7 @@ export default function AddClient() {
                         type="submit"
                         className='bg-blue-500 text-white p-2 w-[20%] rounded-md hover:bg-blue-600'
                     >
-                        Save
+                        {loader ? 'Saving...' : 'Save'}
                     </button>
                 </div>
             </form>
