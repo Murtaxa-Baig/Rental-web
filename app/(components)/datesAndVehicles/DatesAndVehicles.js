@@ -14,7 +14,7 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
     const [vehicles, setVehicles] = useState([])
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredVehicles, setFilteredVehicles] = useState([]);
-    const backendUrl= process.env.NEXT_PUBLIC_BACKEND_URL
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
     const StartLocationSelected = (place) => {
         setStartLocation(place.formatted_address);
@@ -59,6 +59,8 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
         const response = await fetch(`${backendUrl}/owner/vehicles/`);
         const result = await response.json();
         setVehicles(result);
+        console.log("Vehicles data is here", vehicles);
+
     };
 
     useEffect(() => {
