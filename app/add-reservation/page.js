@@ -182,12 +182,12 @@ export default function Page() {
                         <p className='font-semibold text-sm mb-4'>DATES</p>
                         <div className='flex items-center justify-between'>
                             <p className='text-gray-400'>From:</p>
-                            <p className='font-bold text-sm'>{formData.start_date} | {formData.start_time}</p>
+                            <p className='font-bold text-sm'>{formData.start_date} {formData.start_time ? '|' : ''} {formData.start_time}</p>
                         </div>
                         <hr className='text-gray-400' />
                         <div className='flex items-center justify-between mt-4'>
                             <p className='text-gray-400'>Until:</p>
-                            <p className='font-bold text-sm'>{formData.end_date} | {formData.end_time}</p>
+                            <p className='font-bold text-sm'>{formData.end_date} {formData.end_time ? '|' : ''} {formData.end_time}</p>
                         </div>
                         <hr className='text-gray-400' />
 
