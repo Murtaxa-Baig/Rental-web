@@ -7,7 +7,7 @@ import AddNewCompany from '../modal/addNewCompany/AddNewCompany'
 export default function AddStaffDriver() {
     const [isShowModal, setIsShowModal] = useState(false)
     const [isNextPart, setIsNextPart] = useState(false)
-
+    const backendUrl= process.env.NEXT_PUBLIC_BACKEND_URL
     const [formData, setFormData] = useState({
         name: '',
         surname: '',
@@ -55,7 +55,7 @@ export default function AddStaffDriver() {
         }
 
         try {
-            const response = await fetch(`https://5a80-154-80-14-181.ngrok-free.app/owner/staff-drivers/`, {
+            const response = await fetch(`${backendUrl}owner/staff-drivers/`, {
                 method: 'POST',
                 body: data
             })

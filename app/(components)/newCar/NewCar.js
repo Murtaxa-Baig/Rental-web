@@ -5,6 +5,7 @@ import Damages from '../damages/Damages';
 
 export default function NewCar() {
 
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
     const [activeTab, setActiveTab] = useState('Vehicle information');
     const [formData, setFormData] = useState({
         vehicle_type: "",
@@ -72,15 +73,6 @@ export default function NewCar() {
 
 
 
-    // const handleChange = (e) => {
-    //     const { name, value, type, checked, files } = e.target;
-
-    //     setFormData(prevData => ({
-    //         ...prevData,
-    //         [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value
-    //     }));
-    // };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -88,7 +80,7 @@ export default function NewCar() {
             const formDataToSubmit = new FormData();
 
             Object.keys(formData).forEach((key) => {
-                if (key === 'images') {
+                if (key === 'images' && formData[key]) {
                     formData[key].forEach((file, i) => {
                         formDataToSubmit.append(`image_${i}`, file);
                     });
@@ -97,7 +89,7 @@ export default function NewCar() {
                 }
             });
 
-            const response = await fetch('https://5a80-154-80-14-181.ngrok-free.app/owner/vehicles/', {
+            const response = await fetch(`${backendUrl}owner/vehicles/`, {
                 method: 'POST',
                 body: formDataToSubmit
             });
@@ -112,6 +104,7 @@ export default function NewCar() {
             console.error('Error:', error);
         }
     };
+
 
     const renderContent = () => {
         switch (activeTab) {

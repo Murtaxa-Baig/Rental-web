@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import filt from "@/public/images/filter.svg";
 import add from "@/public/images/add.svg";
@@ -11,6 +11,10 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
     const [checked, setChecked] = useState(false);
     const [showNewCarModal, setShowNewCarModal] = useState(false);
     const [selectColor, setSelectColor] = useState('text-orange-600');
+    const [vehicles, setVehicles] = useState([])
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredVehicles, setFilteredVehicles] = useState([]);
+    const backendUrl= process.env.NEXT_PUBLIC_BACKEND_URL
 
     const StartLocationSelected = (place) => {
         setStartLocation(place.formatted_address);
@@ -48,6 +52,36 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
                 setSelectColor('text-gray-600');
         }
     };
+
+
+
+    const fetchVehicles = async () => {
+        const response = await fetch(`${backendUrl}/owner/vehicles/`);
+        const result = await response.json();
+        setVehicles(result);
+    };
+
+    useEffect(() => {
+        fetchVehicles();
+    }, []);
+
+
+
+
+    useEffect(() => {
+        const results = vehicles.filter(vehicle =>
+            vehicle.brand.toLowerCase().includes(searchQuery.toLowerCase()) // Filter by brand
+        );
+        setFilteredVehicles(results);
+    }, [searchQuery, vehicles]);
+
+
+    // Handle search input change
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value); // Update search query
+    };
+
+    console.log("vehicle data is here", vehicles);
 
     return (
         <>
@@ -150,10 +184,10 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
             <div className='flex flex-col mt-4 md:flex-row items-center md:justify-between'>
                 <input
                     type="text"
-                    placeholder='Search Vehicle'
+                    placeholder='Search Vehicle by Brand'
                     className='w-full md:w-[72%] p-3 border-[1px] border-black outline-none rounded-md h-14 mb-4 md:mb-0'
-                    onChange={handleChange}
-                    name="search_vehicle"
+                    onChange={handleSearchChange} // Handle search change
+                    value={searchQuery} // Controlled input
                 />
                 <div className='flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4 w-full md:w-auto'>
                     <button className='border-[1px] h-14 px-3 rounded-md shadow-lg w-full md:w-auto flex justify-center items-center hover:bg-gray-200'>
@@ -196,6 +230,43 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
                 <p className='text-[14px] text-gray-300 mx-2'>Partners cars</p>
             </div>
 
+
+            <div className='my-6'>
+                {/* Display "No results found" if no matching vehicles */}
+                {filteredVehicles.length === 0 ? (
+                    <div className="text-center text-gray-600">No results found</div>
+                ) : (
+                    <table className='w-full hidden md:table'>
+                        <thead className='w-full'>
+                            <tr className='w-full '>
+                                <th className='w-[7%]'></th>
+                                <th className='text-gray-600 w-[33%] text-left font-semibold text-sm'>Brand and model</th>
+                                <th className='text-gray-600 w-[10%] text-left font-semibold text-sm'>Color</th>
+                                <th className='text-gray-600 w-[10%] text-left font-semibold text-sm'>Year</th>
+                                <th className='text-gray-600 w-[20%] text-left font-semibold text-sm'>Plate number</th>
+                                <th className='text-gray-600 w-[40%] text-left font-semibold text-sm'>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredVehicles.map((car, index) => (
+                                <tr key={index} className='w-full mb-8'>
+                                    <th className='w-[7%]'>
+                                        <input type="radio" name="" className='border-[2px]' id="" />
+                                    </th>
+                                    <th className='text-gray-600 w-[33%] text-left font-semibold text-sm'>{car?.brand}</th>
+                                    <th className='text-gray-600 w-[10%] text-left font-semibold text-sm'>{car?.color}</th>
+                                    <th className='text-gray-600 w-[10%] text-left font-semibold text-sm'>{car?.year_of_issue}</th>
+                                    <th className='text-gray-600 w-[20%] text-left font-semibold text-sm'>{car?.plate_number}</th>
+                                    <th className='text-gray-600 w-[40%]  font-semibold text-sm text-center'>
+                                        <button className='text-green-500 p-1 border-[1px] border-green-500 text-sm rounded-md'>Available</button>
+                                        <p className='text-xs text-blue-500 underline '>{car?.base_location}</p>
+                                    </th>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
+            </div>
 
         </>
     );

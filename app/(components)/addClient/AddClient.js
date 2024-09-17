@@ -12,6 +12,7 @@ import sad from '@/public/images/sad.svg'
 import AddNewCompany from '../modal/addNewCompany/AddNewCompany'
 
 export default function AddClient() {
+    const backendUrl= process.env.NEXT_PUBLIC_BACKEND_URL
     const [isShowModal, setIsShowModal] = useState(false);
     const [formData, setFormData] = useState({
         client_name: "",
@@ -56,7 +57,7 @@ export default function AddClient() {
         const bacendUrl = process.env.BACKEND_URL
 
         try {
-            const response = await fetch(`https://5a80-154-80-14-181.ngrok-free.app/owner/create-client/`, {
+            const response = await fetch(`${backendUrl}owner/create-client/`, {
                 method: 'POST',
                 body: formDataToSend,
             });
@@ -81,12 +82,12 @@ export default function AddClient() {
                     driver_license_valid_until: "",
                     passport_serial: "",
                     passport_valid_until: "",
-                    image: null,  // Added image field
+                    image: null,  
                 });
-                // Handle success (e.g., redirect or show a success message)
+                
             } else {
                 console.error('Failed to create client:', response.statusText);
-                // Handle error (e.g., show an error message)
+
             }
         } catch (error) {
             console.error('Error:', error);
