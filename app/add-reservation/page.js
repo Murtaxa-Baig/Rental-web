@@ -74,7 +74,7 @@ export default function Page() {
     };
 
 
-    console.log("form data is here", formData);
+    // console.log("form data is here", formData);
 
 
     const renderContent = () => {
