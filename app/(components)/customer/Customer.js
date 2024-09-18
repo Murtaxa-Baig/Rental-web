@@ -69,12 +69,13 @@ export default function Customer({ setActiveTab }) {
                 {dropdownVisible && filteredClients.length > 0 && (
                     <div className='absolute top-14 left-0 w-full sm:w-[69%] rounded-md bg-white border border-gray-300 max-h-60 overflow-y-auto z-10'>
                         {filteredClients.map((client) => (
-                            <div
+                            <button
                                 key={client.id}
                                 onClick={() => handleClientClick(client)}
-                                className='cursor-pointer text-left p-2 hover:bg-gray-200'>
+                                onMouseDown={() => handleClientClick(client)}
+                                className='cursor-pointer text-left p-2 w-full hover:bg-gray-200'>
                                 {client.client_name}
-                            </div>
+                            </button>
                         ))}
                     </div>
                 )}
