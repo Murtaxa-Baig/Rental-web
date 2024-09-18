@@ -7,6 +7,7 @@ import ExtraServices from '../(components)/extraServices/ExtraServices';
 import Billing from '../(components)/billing/Billing';
 
 export default function Page() {
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
     const [selectColor, setSelectColor] = useState('text-orange-600');
     const [activeTab, setActiveTab] = useState('Dates and Vehicles');
     const [startLocation, setStartLocation] = useState(null);
@@ -18,9 +19,9 @@ export default function Page() {
         end_date: '',
         end_time: '',
         pickup_location: '',
-        pickup_location_notes: 'Near the entrance',
+        pickup_location_notes: '',
         return_location: '',
-        return_location_notes: 'Next to the library',
+        return_location_notes: '',
         extra_services_charge: null,
         delivery_price: null,
         deposit: null,
@@ -54,7 +55,7 @@ export default function Page() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://127.0.0.1:8000/owner/reservations/', {
+            const response = await fetch(`${backendUrl}owner/reservations/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -74,7 +75,7 @@ export default function Page() {
     };
 
 
-    // console.log("form data is here", formData);
+    console.log("form data is here", formData);
 
 
     const renderContent = () => {

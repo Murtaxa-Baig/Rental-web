@@ -14,15 +14,17 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
     const [vehicles, setVehicles] = useState([])
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredVehicles, setFilteredVehicles] = useState([]);
+    const [startLocationNote, setStartLocationNote] = useState(false)
+    const [endLocationNote, setEndLocationNote] = useState(false)
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
-    const StartLocationSelected = (place) => {
-        setStartLocation(place.formatted_address);
-    };
+    // const StartLocationSelected = (place) => {
+    //     setStartLocation(place.formatted_address);
+    // };
 
-    const ReturnLocationSelected = (place) => {
-        setReturnLocation(place.formatted_address);
-    };
+    // const ReturnLocationSelected = (place) => {
+    //     setReturnLocation(place.formatted_address);
+    // };
 
     const handleChanges = (nextChecked) => {
         setChecked(nextChecked);
@@ -83,7 +85,6 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
         setSearchQuery(event.target.value); // Update search query
     };
 
-    console.log("vehicle data is here", vehicles);
 
     return (
         <>
@@ -135,7 +136,7 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
                         </label>
                         <input
                             name="end_date"
-                            value={formData.end_date} // Make sure `formData.end_date` is in `YYYY-MM-DD` format
+                            value={formData.end_date}
                             onChange={handleChange}
                             type="date"
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -163,11 +164,35 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
                     </label>
                     <Autocomplete
                         apiKey="AIzaSyBBGxKE3abRfU_ZsgC6JmiIIUpO5QmaTjI"
-                        onPlaceSelected={StartLocationSelected}
+                        onPlaceSelected={(place) => {
+                            setStartLocation(place.formatted_address);
+                            handleChange({ target: { name: "pickup_location", value: place.formatted_address } });
+                        }}
+                        options={{
+                            types: ['geocode'],
+                            componentRestrictions: { country: 'it' },
+                        }}
                         value={startLocation}
                         onChange={(e) => setStartLocation(e.target.value)}
                         className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none"
                     />
+                    <span onClick={() => setStartLocationNote(true)} className='text-blue-500 my-1 underline mx-2 cursor-pointer'>+ Add notes</span>
+                    {
+                        startLocationNote ? <>
+                            <div>
+                                <input
+                                    type="text"
+                                    id=""
+                                    name="pickup_location_notes"
+                                    value={formData.pickup_location_notes}
+                                    onChange={handleChange}
+                                    placeholder='Add Note'
+                                    className='outline-none border-[1px] border-gray-500 rounded-md p-2 w-full'
+                                />
+                            </div>
+                        </> : null
+                    }
+
                 </div>
                 <div className="relative w-full md:w-[49%]">
                     <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
@@ -175,11 +200,35 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
                     </label>
                     <Autocomplete
                         apiKey="AIzaSyBBGxKE3abRfU_ZsgC6JmiIIUpO5QmaTjI"
-                        onPlaceSelected={ReturnLocationSelected}
+                        onPlaceSelected={(place) => {
+                            setReturnLocation(place.formatted_address);
+                            handleChange({ target: { name: "return_location", value: place.formatted_address } });
+                        }}
+                        options={{
+                            types: ['geocode'],
+                            componentRestrictions: { country: 'it' },
+                        }}
                         value={returnLocation}
                         onChange={(e) => setReturnLocation(e.target.value)}
                         className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none"
                     />
+                    <span onClick={() => setEndLocationNote(true)} className='text-blue-500 my-1 underline mx-2 cursor-pointer'>+ Add notes</span>
+                    {
+                        endLocationNote ? <>
+                            <div>
+                                <input
+                                    type="text"
+                                    id=""
+                                    name="return_location_notes"
+                                    value={formData.return_location_notes}
+                                    onChange={handleChange}
+                                    placeholder='Add Note'
+                                    className='outline-none border-[1px] border-gray-500 rounded-md p-2 w-full'
+                                />
+                            </div>
+                        </> : null
+                    }
+
                 </div>
             </div>
 
