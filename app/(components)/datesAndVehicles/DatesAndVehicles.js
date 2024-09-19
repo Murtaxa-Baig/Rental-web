@@ -7,7 +7,7 @@ import { useState } from 'react';
 import NewCarModal from '../modal/newCarModal/NewCarModal';
 import Autocomplete from 'react-google-autocomplete';
 
-export default function DatesAndVehicles({ startLocation, setStartLocation, returnLocation, setReturnLocation, formData, handleChange }) {
+export default function DatesAndVehicles({ startLocation, setStartLocation, returnLocation, setReturnLocation, formData, handleChange, setFormData }) {
     const [checked, setChecked] = useState(false);
     const [showNewCarModal, setShowNewCarModal] = useState(false);
     const [selectColor, setSelectColor] = useState('text-orange-600');
@@ -16,6 +16,8 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
     const [filteredVehicles, setFilteredVehicles] = useState([]);
     const [startLocationNote, setStartLocationNote] = useState(false)
     const [endLocationNote, setEndLocationNote] = useState(false)
+    const [selectedVehicleId, setSelectedVehicleId] = useState(null);
+
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
     // const StartLocationSelected = (place) => {
@@ -84,6 +86,16 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value); // Update search query
     };
+
+    const handleVehicleSelect = (vehicleId, vehicleName) => {
+        setSelectedVehicleId(vehicleId);
+        handleChange({ target: { name: 'vehicle', value: vehicleId } });
+        setFormData(prevData => ({
+            ...prevData,
+            vehicle: vehicleId
+        }));
+    };
+
 
 
     return (
@@ -302,8 +314,14 @@ export default function DatesAndVehicles({ startLocation, setStartLocation, retu
                             {filteredVehicles.map((car, index) => (
                                 <tr key={index} className='w-full mb-8'>
                                     <th className='w-[7%]'>
-                                        <input type="radio" name="" className='border-[2px]' id="" />
-                                    </th>
+                                        <input
+                                            type="radio"
+                                            name="vehicle"
+                                            value={car.id} 
+                                            checked={selectedVehicleId === car.id}
+                                            onChange={() => handleVehicleSelect(car.id, car.brand)} 
+                                            className='border-[2px]'
+                                        />                                    </th>
                                     <th className='text-gray-600 w-[33%] text-left font-semibold text-sm'>{car?.brand}</th>
                                     <th className='text-gray-600 w-[10%] text-left font-semibold text-sm'>{car?.color}</th>
                                     <th className='text-gray-600 w-[10%] text-left font-semibold text-sm'>{car?.year_of_issue}</th>

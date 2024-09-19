@@ -5,7 +5,7 @@ import edit from '@/public/images/edit.svg';
 import add from '@/public/images/add.svg';
 import AddExtraModal from '../modal/addExtraModal/AddExtraModal';
 
-export default function ExtraServices({ setActiveTab }) {
+export default function ExtraServices({ setActiveTab, formData, handleChange }) {
     const [showModal, setShowModal] = useState(false)
 
     return (
