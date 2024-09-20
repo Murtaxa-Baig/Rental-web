@@ -23,7 +23,7 @@ export default function ExtraServices({ setActiveTab, formData, handleChange }) 
                                 <div>
                                     <p className='text-gray-600 font-bold'>0€</p>
                                     <p className='text-gray-400 text-[10px]'>All Period</p>
-                                </div>
+                                </div >
                                 <div>
                                     <p className='text-gray-600 font-bold'>0€</p>
                                     <p className='text-gray-400 text-[10px]'>Per Day</p>
