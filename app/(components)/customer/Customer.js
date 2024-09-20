@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import AddCustomerOrAgencyModal from '../modal/addCustomerOrAgencyModal/AddCustomerOrAgencyModal'
 
-export default function Customer({ setActiveTab }) {
+export default function Customer({ setActiveTab, formData, handleChange , setFormData}) {
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     const [showAddCustomerOrAgencyModal, setAddCustomerOrAgencyModal] = useState(false);
     const [clients, setClients] = useState([]);
@@ -21,11 +21,6 @@ export default function Customer({ setActiveTab }) {
         fetchClients();
     }, []);
 
-
-
-    console.log("selectedClient", selectedClient);
-
-
     useEffect(() => {
         // Filter clients based on the search term
         if (searchTerm) {
@@ -43,8 +38,15 @@ export default function Customer({ setActiveTab }) {
         setSearchTerm(client.client_name);
         setFilteredClients([]);
         setDropdownVisible(false);
-        setIsNextTab(true)
+        setIsNextTab(true);
+
+        // Set the selected client ID in the formData
+        setFormData((prevData) => ({
+            ...prevData,
+            client: client.id, 
+        }));
     };
+
 
     return (
         <>
@@ -53,6 +55,7 @@ export default function Customer({ setActiveTab }) {
             <div className='flex flex-col sm:flex-row text-center w-full gap-2 relative'>
                 <input
                     type="text"
+                    name="client"
                     placeholder='Start typing client / Agency name'
                     className='p-2 border-[1px] h-14 border-gray-500 rounded-md outline-none w-full sm:w-[70%]'
                     value={searchTerm}

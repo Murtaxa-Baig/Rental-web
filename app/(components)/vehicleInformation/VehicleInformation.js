@@ -11,29 +11,133 @@ import Tariffs from '../ui/tariffs/Tariffs';
 import SeasonMatrix from '../ui/seasonMatrix/SeasonMatrix';
 import Additional from '../ui/additional/Additional';
 import Documents from '../ui/documents/Documents';
+import astonMartin from '@/public/images/astonMartin.jpg'
+import alfaRomeo from '@/public/images/alfaRomeo.jpg'
+import acura from '@/public/images/acura.jpg'
+import audi from '@/public/images/audi.png'
+import bentley from '@/public/images/bentley.png'
+import rivian from '@/public/images/rivian.png'
+import bmw from '@/public/images/bmw.png'
+import Bugatti from '@/public/images/Bugatti.jpg'
+import buick from '@/public/images/buick.jpg'
+import cadillac from '@/public/images/cadillac.png'
+import chevrolet from '@/public/images/chevrolet.png'
+import chrysler from '@/public/images/chrysler.png'
+import citroen from '@/public/images/citroen.jpg'
+import daihatsu from '@/public/images/daihatsu.png'
+import honda from '@/public/images/honda.png'
+import dodge from '@/public/images/dodge.png'
+import ferrari from '@/public/images/ferrari.png'
+import hyundai from '@/public/images/hyundai.png'
+import jaguar from '@/public/images/jaguar.png'
+import subaru from '@/public/images/subaru.png'
+import jeep from '@/public/images/jeep.png'
+import fiat from '@/public/images/images.jpeg'
+import ford from '@/public/images/ford.jpg'
+import genesis from '@/public/images/genesis.jpg'
+import GMC from '@/public/images/GMC.jpg'
+import isuzu from '@/public/images/isuzu.png'
+import Infiniti from '@/public/images/Infiniti.jpg'
+import Kia from '@/public/images/Kia.jpg'
+import Koenigsegg from '@/public/images/Koenigsegg.jpg'
+import lancia from '@/public/images/lancia.jpg'
+import landRover from '@/public/images/landRover.jpg'
+import lexus from '@/public/images/lexus.jpg'
+import lamborghini from '@/public/images/lamborghini.png'
+import maserati from '@/public/images/maserati.png'
+import porsche from '@/public/images/porsche.png'
+import toyota from '@/public/images/toyota.png'
+import mazda from '@/public/images/mazda.png'
+import tesla from '@/public/images/tesla.png'
+import mitsubishi from '@/public/images/mitsubishi.png'
+import nissan from '@/public/images/nissan.png'
+import lincoln from '@/public/images/lincoln.jpg'
+import mcLaren from '@/public/images/mcLaren.jpg'
+import mercedesBenz from '@/public/images/mercedesBenz.jpg'
+import mini from '@/public/images/mini.jpg'
+import pagani from '@/public/images/pagani.jpg'
+import peugeot from '@/public/images/peugeot.jpg'
+import polestar from '@/public/images/polestar.jpg'
+import ram from '@/public/images/ram.jpg'
+import renault from '@/public/images/renault.jpg'
+import rollsRoyce from '@/public/images/rollsRoyce.jpg'
+import saab from '@/public/images/saab.jpg'
+import seat from '@/public/images/seat.jpg'
+import skoda from '@/public/images/skoda.jpg'
+import smart from '@/public/images/smart.jpg'
+import suzuki from '@/public/images/suzuki.jpg'
+import volkswagen from '@/public/images/volkswagen.jpg'
+import volvo from '@/public/images/volvo.jpg'
+
 
 export default function VehicleInformation({ handleChange, formData }) {
     const [isShowModal, setIsShowModal] = useState(false);
     const [activeIndex, setActiveIndex] = useState(null);
-
+    const [selectedBrand, setSelectedBrand] = useState(null);
 
     const toggleAccordion = (index) => {
         setActiveIndex(activeIndex === index ? null : index);
     };
     const vehicleType = ['Car', 'Wagon', 'Moto', 'WaterToy', 'Boat']
     const brand = [
-        "Aston Martin", "Alfa Romeo", "Acura", "Audi", "Bentley",
-        "BMW", "Bugatti", "Buick", "Cadillac", "Chevrolet",
-        "Chrysler", "Citroën", "Daihatsu", "Dodge", "Ferrari",
-        "Fiat", "Ford", "Genesis", "GMC", "Honda",
-        "Hummer", "Hyundai", "Infiniti", "Isuzu", "Jaguar",
-        "Jeep", "Kia", "Koenigsegg", "Lamborghini", "Lancia",
-        "Land Rover", "Lexus", "Lincoln", "Lucid", "Maserati",
-        "Mazda", "McLaren", "Mercedes-Benz", "Mini", "Mitsubishi",
-        "Nissan", "Pagani", "Peugeot", "Polestar", "Porsche",
-        "Ram", "Renault", "Rivian", "Rolls-Royce", "Saab",
-        "Seat", "Skoda", "Smart", "Subaru", "Suzuki",
-        "Tesla", "Toyota", "Volkswagen", "Volvo"
+        { name: "Aston Martin", logo: astonMartin },
+        { name: "Alfa Romeo", logo: alfaRomeo },
+        { name: "Acura", logo: acura },
+        { name: "Audi", logo: audi },
+        { name: "Bentley", logo: bentley },
+        { name: "BMW", logo: bmw },
+        { name: "Bugatti", logo: Bugatti },
+        { name: "Buick", logo: buick },
+        { name: "Cadillac", logo: cadillac },
+        { name: "Chevrolet", logo: chevrolet },
+        { name: "Chrysler", logo: chrysler },
+        { name: "Citroën", logo: citroen },
+        { name: "Daihatsu", logo: daihatsu },
+        { name: "Dodge", logo: dodge },
+        { name: "Ferrari", logo: ferrari },
+        { name: "Fiat", logo: fiat },
+        { name: "Ford", logo: ford },
+        { name: "Genesis", logo: genesis },
+        { name: "GMC", logo: GMC },
+        { name: "Honda", logo: honda },
+        { name: "Hyundai", logo: hyundai },
+        { name: "Infiniti", logo: Infiniti },
+        { name: "Isuzu", logo: isuzu },
+        { name: "Jaguar", logo: jaguar },
+        { name: "jeep", logo: jeep },
+        { name: "Kia", logo: Kia },
+        { name: "Koenigsegg", logo: Koenigsegg },
+        { name: "Lamborghini", logo: lamborghini },
+        { name: "Lancia", logo: lancia },
+        { name: "Land Rover", logo: landRover },
+        { name: "Lexus", logo: lexus },
+        { name: "Lincoln", logo: lincoln },
+        { name: "Maserati", logo: maserati },
+        { name: "Mazda", logo: mazda },
+        { name: "McLaren", logo: mcLaren },
+        { name: "Mercedes-Benz", logo: mercedesBenz },
+        { name: "Mini", logo: mini },
+        { name: "Mitsubishi", logo: mitsubishi },
+        { name: "Nissan", logo: nissan },
+        { name: "Pagani", logo: pagani },
+        { name: "Peugeot", logo: peugeot },
+        { name: "Polestar", logo: polestar },
+        { name: "Porsche", logo: porsche },
+        { name: "Ram", logo: ram },
+        { name: "Renault", logo: renault },
+        { name: "Rivian", logo: rivian },
+        { name: "Rolls-Royce", logo: rollsRoyce },
+        { name: "Saab", logo: saab },
+        { name: "Seat", logo: seat },
+        { name: "Skoda", logo: skoda },
+        { name: "Smart", logo: smart },
+        { name: "Subaru", logo: subaru },
+        { name: "Suzuki", logo: suzuki },
+        { name: "Tesla", logo: tesla },
+        { name: "Toyota", logo: toyota },
+        { name: "Volkswagen", logo: volkswagen },
+        { name: "Volvo", logo: volvo },
+
     ]
 
     const model = ['2020', '2021', '2022', '2023']
@@ -86,14 +190,32 @@ export default function VehicleInformation({ handleChange, formData }) {
     ];
 
 
+
+    const handleBrandChange = (e) => {
+        const selectedBrandName = e.target.value;
+        const foundBrand = brand.find((b) => b.name === selectedBrandName);
+        console.log("selected brand is ", foundBrand);
+
+        setSelectedBrand(foundBrand);
+        handleChange(e)
+    };
+
     console.log("Data form", formData);
 
     return (
         <>
             <div className="flex flex-col md:flex-row items-center w-full">
                 <div className='w-full md:w-[20%]'>
-                    <div className="border-[1px] border-cyan-400 h-[125px] w-[125px] rounded-full flex justify-center items-center mx-auto">
-                        <p>Logo</p>
+                    <div className="h-[125px] w-[125px] flex justify-center items-center mx-auto">
+                        {selectedBrand ? (
+                            <Image
+                                src={selectedBrand.logo}
+                                className='w-full h-full object-contain	'
+                                alt={selectedBrand.name}
+                            />
+                        ) : (
+                            <p className='text-center'>No brand selected</p>
+                        )}
                     </div>
                 </div>
                 <div className="w-full md:w-[80%]">
@@ -115,10 +237,10 @@ export default function VehicleInformation({ handleChange, formData }) {
                             </label>
                             <select
                                 value={formData.brand}
-                                onChange={handleChange}
+                                onChange={handleBrandChange}  
                                 name="brand" id="" className='w-full p-2 text-gray-500 rounded-md border-2 border-gray-300 outline-none'>
                                 {brand.map((item, index) => (
-                                    <option key={index} value={item}>{item}</option>
+                                    <option key={index} value={item.name}>{item.name}</option>
                                 ))}
                             </select>
                         </div>
@@ -210,7 +332,7 @@ export default function VehicleInformation({ handleChange, formData }) {
             <p className='text-sm my-4'>Here you can decide if the car is your own or if it{`'`}s the agency{`'`}s car.</p>
             <div className="grid grid-cols-1 mt-5 sm:grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-4">
                 <div className="md:col-span-1 lg:col-span-1 w-full flex items-center border-2 p-2 rounded-md h-14">
-                    <input type="radio"  />
+                    <input type="radio" />
                     <p className="font-bold text-gray-500 ml-2">It{`'`}s own client</p>
                 </div>
                 <div className="md:col-span-3 lg:col-span-3 w-full relative h-14">

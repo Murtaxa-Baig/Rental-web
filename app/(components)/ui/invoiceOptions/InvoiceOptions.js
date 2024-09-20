@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import edit from '@/public/images/edit.svg';
 
-export default function InvoiceOptions() {
+export default function InvoiceOptions({ formData, handleChange }) {
     return (
         <>
             <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-2">
@@ -11,6 +11,11 @@ export default function InvoiceOptions() {
                         <p className='font-semibold text-gray-700'>VAT percentage (%)</p>
                         <p className='text-sm text-gray-500 mt-2'>VAT percentage used in invoices</p>
                     </div>
+                    <input type="text" className='outline-none w-[30px]' placeholder='%0'
+                        name='vat_percentage'
+                        value={formData.vat_percentage}
+                        onChange={handleChange}
+                    />
                     <div className='h-8 flex justify-center items-center w-8 rounded-full bg-slate-200'>
                         <Image
                             src={edit}

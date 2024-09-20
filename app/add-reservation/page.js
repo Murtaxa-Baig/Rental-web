@@ -5,12 +5,17 @@ import DatesAndVehicles from '../(components)/datesAndVehicles/DatesAndVehicles'
 import Customer from '../(components)/customer/Customer';
 import ExtraServices from '../(components)/extraServices/ExtraServices';
 import Billing from '../(components)/billing/Billing';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function Page() {
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
     const [selectColor, setSelectColor] = useState('text-orange-600');
     const [activeTab, setActiveTab] = useState('Dates and Vehicles');
     const [startLocation, setStartLocation] = useState(null);
     const [returnLocation, setReturnLocation] = useState(null);
+    const [loader, setLoader] = useState(false)
     const [formData, setFormData] = useState({
         status: '',
         start_date: '',
@@ -18,9 +23,9 @@ export default function Page() {
         end_date: '',
         end_time: '',
         pickup_location: '',
-        pickup_location_notes: 'Near the entrance',
+        pickup_location_notes: '',
         return_location: '',
-        return_location_notes: 'Next to the library',
+        return_location_notes: '',
         extra_services_charge: null,
         delivery_price: null,
         deposit: null,
@@ -36,11 +41,11 @@ export default function Page() {
         hide_total_price: false,
         vat_percentage: '',
         prices_include_vat: true,
-        additional_info: 'Please handle the vehicle with care.',
+        additional_info: '',
         additional_info_files: null,
-        vehicle: 1,
+        vehicle: null,
         company: null,
-        client: 1
+        client: null
     });
 
     const handleChange = (e) => {
@@ -52,9 +57,10 @@ export default function Page() {
     };
 
     const handleSubmit = async (e) => {
+        setLoader(true)
         e.preventDefault();
         try {
-            const response = await fetch('http://127.0.0.1:8000/owner/reservations/', {
+            const response = await fetch(`${backendUrl}owner/reservations/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,17 +70,54 @@ export default function Page() {
 
             const result = await response.json();
             if (response.ok) {
+                toast.success('Client added successfully.');
+                setFormData({
+                    status: '',
+                    start_date: '',
+                    start_time: '',
+                    end_date: '',
+                    end_time: '',
+                    pickup_location: '',
+                    pickup_location_notes: '',
+                    return_location: '',
+                    return_location_notes: '',
+                    extra_services_charge: 12,
+                    delivery_price: null,
+                    deposit: null,
+                    excess: null,
+                    km: '',
+                    km_extra_price: null,
+                    price_per_day: null,
+                    agency_commision: null,
+                    expenses: null,
+                    total_price: null,
+                    hide_price_per_day: false,
+                    commision_only: false,
+                    hide_total_price: false,
+                    vat_percentage: '',
+                    prices_include_vat: true,
+                    additional_info: '',
+                    additional_info_files: null,
+                    vehicle: null,
+                    company: null,
+                    client: null
+                })
+                setLoader(false)
                 console.log('Success:', result);
             } else {
                 console.error('Error:', result);
+                setLoader(false)
+                toast.error('Failed to create client. Please try again.');
             }
         } catch (error) {
             console.error('Error during API call:', error);
+            setLoader(false)
+            toast.error('An error occurred. Please try again.');
         }
     };
 
 
-    // console.log("form data is here", formData);
+    console.log("form data is here", formData);
 
 
     const renderContent = () => {
@@ -86,14 +129,29 @@ export default function Page() {
                     returnLocation={returnLocation}
                     setReturnLocation={setReturnLocation}
                     formData={formData}
+                    setFormData={setFormData}
                     handleChange={handleChange}
                 />;
             case 'Customer':
-                return <Customer setActiveTab={setActiveTab} />;
+                return <Customer
+                    setActiveTab={setActiveTab}
+                    formData={formData}
+                    handleChange={handleChange}
+                    setFormData={setFormData}
+                />;
             case 'Extra Services':
-                return <ExtraServices setActiveTab={setActiveTab} />;
+                return <ExtraServices
+                    setActiveTab={setActiveTab}
+                    formData={formData}
+                    handleChange={handleChange}
+                />;
             case 'Billing':
-                return <Billing />;
+                return <Billing
+                    loader={loader}
+                    formData={formData}
+                    handleChange={handleChange}
+                    handleSubmit={handleSubmit}
+                />;
             default:
                 return null;
         }
@@ -125,6 +183,7 @@ export default function Page() {
 
     return (
         <>
+            <ToastContainer />
             <div className='mt-10 mb-3'>
                 <h1 className='font-bold text-3xl text-gray-500'>New reservation</h1>
                 <p className='text-gray-500'>

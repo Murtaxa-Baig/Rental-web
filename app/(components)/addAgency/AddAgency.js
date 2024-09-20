@@ -284,7 +284,8 @@ export default function AddAgency() {
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
-                    <div className="relative w-full md:w-[49%]">
+
+                    <div className="relative w-full md:w-[49%] mt-8">
                         <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
                             Enter Client Name
                         </label>

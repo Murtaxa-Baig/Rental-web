@@ -11,7 +11,7 @@ export default function page() {
                 </p>
             </div>
             <div className='p-4 bg-white w-full rounded-md'>
-                <AddClient />
+                <AddClient  />
             </div>
         </>
     )
