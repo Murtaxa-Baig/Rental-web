@@ -88,11 +88,9 @@ export default function AddAgency() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        // Create a FormData object
+
         const submissionData = new FormData();
-    
-        // Append all main form fields
+
         submissionData.append('company_name', formData.company_name);
         submissionData.append('person_name', formData.person_name);
         submissionData.append('person_surname', formData.person_surname);
@@ -105,8 +103,7 @@ export default function AddAgency() {
         submissionData.append('client_name', formData.client_name);
         submissionData.append('linked_company', formData.linked_company);
         submissionData.append('note', formData.note);
-    
-        // Append each document with nested fields using bracket notation
+
         formData.documents.forEach((doc, index) => {
             submissionData.append(`documents[${index}]document`, doc.document); // File
             submissionData.append(`documents[${index}]document_name`, doc.document_name); // String
@@ -115,21 +112,21 @@ export default function AddAgency() {
         });
 
         console.log(submissionData)
-    
+
         try {
             const res = await fetch('https://buraak.pythonanywhere.com/owner/agencies/', {
                 method: 'POST',
                 // Do not set 'Content-Type'; the browser will set it automatically, including the boundary
                 body: submissionData
             });
-    
+
             if (!res.ok) {
                 const errorData = await res.json();
                 console.error('Error creating agency:', errorData);
                 alert(`Error: ${JSON.stringify(errorData)}`);
                 return;
             }
-    
+
             const data = await res.json();
             console.log('Agency created successfully:', data);
             alert('Agency created successfully!');
@@ -139,8 +136,8 @@ export default function AddAgency() {
             alert('An unexpected error occurred.');
         }
     };
-    
-      
+
+
 
     const addDocument = (document) => {
         setFormData({
