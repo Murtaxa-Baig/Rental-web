@@ -111,13 +111,13 @@ export default function AddAgency() {
             submissionData.append(`documents[${index}]document`, doc.document); // File
             submissionData.append(`documents[${index}]document_name`, doc.document_name); // String
             submissionData.append(`documents[${index}]issue_date`, doc.issue_date); // Date
-            submissionData.append(`documents[${index}]expiry_data`, doc.expiry_date); // Date
+            submissionData.append(`documents[${index}]expiry_date`, doc.expiry_date); // Date
         });
 
         console.log(submissionData)
     
         try {
-            const res = await fetch('https://3af0-2400-adc5-493-c500-e401-db35-8dab-ceec.ngrok-free.app/owner/agencies/', {
+            const res = await fetch('https://buraak.pythonanywhere.com/owner/agencies/', {
                 method: 'POST',
                 // Do not set 'Content-Type'; the browser will set it automatically, including the boundary
                 body: submissionData

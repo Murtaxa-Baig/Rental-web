@@ -7,7 +7,7 @@ export default function AddDocumentModal({ setIsShowModal, addDocument }) {
         document_name: '',
         description: '',
         issue_date: '',
-        expiry_data: '',
+        expiry_date: '',
         document: null,
         valid_date: false,
     });
@@ -113,8 +113,8 @@ export default function AddDocumentModal({ setIsShowModal, addDocument }) {
                                     </label>
                                     <input
                                         type="date"
-                                        name="expiry_data"
-                                        value={documentData.expiry_data}
+                                        name="expiry_date"
+                                        value={documentData.expiry_date}
                                         onChange={handleInputChange}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
