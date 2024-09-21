@@ -4,8 +4,11 @@ import React, { useState, useEffect } from 'react';
 import documentIcon from '@/public/images/document.svg';
 import Link from 'next/link';
 import AddDocumentModal from '../modal/addDocumentModal/AddDocumentModal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function AddAgency() {
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
     const [isShowModal, setIsShowModal] = useState(false);
     const [formData, setFormData] = useState({
         company_name: '',
@@ -15,14 +18,14 @@ export default function AddAgency() {
         email: '',
         website: '',
         address: '',
-        language: 'EN', // Changed to match the `array` value
+        language: 'EN', 
         vat: '',
         client_name: '',
         linked_company: '',
         note: '',
         documents: []
     });
-
+    const [loader, setLoader] = useState(false)
     const [companies, setCompanies] = useState([]);
     const [clients, setClients] = useState([]);
 
@@ -31,7 +34,7 @@ export default function AddAgency() {
     useEffect(() => {
         const fetchClients = async () => {
             try {
-                const res = await fetch("https://buraak.pythonanywhere.com/owner/create-client/");
+                const res = await fetch(`${backendUrl}owner/create-client/`);
                 if (!res.ok) {
                     throw new Error("Network Response was not ok");
                 }
@@ -45,10 +48,9 @@ export default function AddAgency() {
     }, []);
 
     useEffect(() => {
-        // Fetch companies data when the component mounts
         const fetchCompanies = async () => {
             try {
-                const res = await fetch('https://buraak.pythonanywhere.com/owner/agencies/');
+                const res = await fetch(`${backendUrl}owner/agencies/`);
                 if (!res.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -88,11 +90,10 @@ export default function AddAgency() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        // Create a FormData object
+        setLoader(true)
+
         const submissionData = new FormData();
-    
-        // Append all main form fields
+
         submissionData.append('company_name', formData.company_name);
         submissionData.append('person_name', formData.person_name);
         submissionData.append('person_surname', formData.person_surname);
@@ -105,8 +106,7 @@ export default function AddAgency() {
         submissionData.append('client_name', formData.client_name);
         submissionData.append('linked_company', formData.linked_company);
         submissionData.append('note', formData.note);
-    
-        // Append each document with nested fields using bracket notation
+
         formData.documents.forEach((doc, index) => {
             submissionData.append(`documents[${index}]document`, doc.document); // File
             submissionData.append(`documents[${index}]document_name`, doc.document_name); // String
@@ -115,30 +115,31 @@ export default function AddAgency() {
         });
     
         try {
-            const res = await fetch('https://buraak.pythonanywhere.com/owner/agencies/', {
+            const res = await fetch(`${backendUrl}owner/agencies/`, {
                 method: 'POST',
-                // Do not set 'Content-Type'; the browser will set it automatically, including the boundary
                 body: submissionData
             });
-    
+
             if (!res.ok) {
                 const errorData = await res.json();
                 console.error('Error creating agency:', errorData);
-                alert(`Error: ${JSON.stringify(errorData)}`);
+                toast.error('Failed to create client. Please try again.');
+                setLoader(false)
                 return;
             }
-    
+
             const data = await res.json();
             console.log('Agency created successfully:', data);
-            alert('Agency created successfully!');
-            // Optionally, reset the form or redirect the user
+            toast.success('Client added successfully.');
+            setLoader(false)
         } catch (error) {
             console.error('Error creating agency:', error);
-            alert('An unexpected error occurred.');
+            toast.error('An error occurred. Please try again.');
+            setLoader(false)
         }
     };
-    
-      
+
+
 
     const addDocument = (document) => {
         setFormData({
@@ -149,6 +150,7 @@ export default function AddAgency() {
 
     return (
         <>
+            <ToastContainer />
             <form onSubmit={handleSubmit} encType="multipart/form-data">
                 {/* Company Name and Person's Name */}
                 <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-8">
@@ -167,7 +169,7 @@ export default function AddAgency() {
                     </div>
                     <div className="relative w-full md:w-[49%]">
                         <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                            Person's Name
+                            Person{`'`}s Name
                         </label>
                         <input
                             type="text"
@@ -184,7 +186,7 @@ export default function AddAgency() {
                 <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-8">
                     <div className="relative w-full md:w-[49%] mb-4 md:mb-0">
                         <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                            Person's Surname
+                            Person{`'`}s Surname
                         </label>
                         <input
                             type="text"
@@ -196,7 +198,7 @@ export default function AddAgency() {
                     </div>
                     <div className="relative w-full md:w-[49%]">
                         <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                            Person's Number
+                            Person{`'`}s Number
                         </label>
                         <input
                             type="text"
@@ -283,7 +285,7 @@ export default function AddAgency() {
                         />
                     </div>
 
-                    <div className="relative w-full md:w-[49%] mt-8">
+                    <div className="relative w-full md:w-[49%]">
                         <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
                             Enter Client Name
                         </label>
@@ -363,7 +365,7 @@ export default function AddAgency() {
                     </Link>
 
                     <button type='submit' className='flex items-center justify-center text-white w-full sm:w-[20%] bg-blue-500 rounded-md font-bold cursor-pointer p-2 mt-2 sm:mt-0'>
-                        Create Partner
+                        {loader ? 'Creating Partner...' : 'Create Partner'}
                     </button>
                 </div>
             </form>
