@@ -113,8 +113,6 @@ export default function AddAgency() {
             submissionData.append(`documents[${index}]issue_date`, doc.issue_date); // Date
             submissionData.append(`documents[${index}]expiry_date`, doc.expiry_date); // Date
         });
-
-        console.log(submissionData)
     
         try {
             const res = await fetch('https://buraak.pythonanywhere.com/owner/agencies/', {
