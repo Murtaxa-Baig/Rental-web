@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import documentIcon from '@/public/images/document.svg';
 import Link from 'next/link';
 import AddDocumentModal from '../modal/addDocumentModal/AddDocumentModal';
+import { fetchAgency } from '@/app/api/fetchAgency';
+import { fetchClients } from '@/app/api/fetchClients';
 
 export default function AddAgency() {
     const [isShowModal, setIsShowModal] = useState(false);
@@ -29,37 +31,29 @@ export default function AddAgency() {
     const languages = ['English', 'Russian', 'Italian', 'German', 'French', 'Portuguese', 'Spanish', 'Polish', 'Chinese', 'Dutch', 'Czech'];
 
     useEffect(() => {
-        const fetchClients = async () => {
+        const getClients = async () => {
             try {
-                const res = await fetch("https://buraak.pythonanywhere.com/owner/create-client/");
-                if (!res.ok) {
-                    throw new Error("Network Response was not ok");
-                }
-                const data = await res.json();
+                const data = await fetchClients();
                 setClients(data);
             } catch (error) {
-                console.log("Error fetching clients", error);
+                console.error('Error fetching clients:', error);
             }
         };
-        fetchClients();
+
+        getClients();
     }, []);
 
     useEffect(() => {
-        // Fetch companies data when the component mounts
-        const fetchCompanies = async () => {
+        const getClients = async () => {
             try {
-                const res = await fetch('https://buraak.pythonanywhere.com/owner/agencies/');
-                if (!res.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await res.json();
+                const data = await fetchAgency();
                 setCompanies(data);
             } catch (error) {
-                console.error('Error fetching companies:', error);
+                console.error('Error fetching clients:', error);
             }
         };
 
-        fetchCompanies();
+        getClients();
     }, []);
 
     const handleInputChange = (e) => {
