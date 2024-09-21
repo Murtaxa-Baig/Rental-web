@@ -6,9 +6,11 @@ import Link from 'next/link';
 import AddDocumentModal from '../modal/addDocumentModal/AddDocumentModal';
 import { fetchAgency } from '@/app/api/fetchAgency';
 import { fetchClients } from '@/app/api/fetchClients';
+import { createAgency } from '@/app/api/createAgency';
+import { ToastContainer } from 'react-toastify';
 
 export default function AddAgency() {
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
+    // State variables
     const [isShowModal, setIsShowModal] = useState(false);
     const [formData, setFormData] = useState({
         company_name: '',
@@ -25,12 +27,19 @@ export default function AddAgency() {
         note: '',
         documents: []
     });
-    const [loader, setLoader] = useState(false)
+    const [loader, setLoader] = useState(false);
     const [companies, setCompanies] = useState([]);
     const [clients, setClients] = useState([]);
 
-    const languages = ['English', 'Russian', 'Italian', 'German', 'French', 'Portuguese', 'Spanish', 'Polish', 'Chinese', 'Dutch', 'Czech'];
+    // Supported languages for selection
+    const languages = [
+        'English', 'Russian', 'Italian', 
+        'German', 'French', 'Portuguese', 
+        'Spanish', 'Polish', 'Chinese', 
+        'Dutch', 'Czech'
+    ];
 
+    // Fetch clients from API on component mount
     useEffect(() => {
         const getClients = async () => {
             try {
@@ -44,19 +53,21 @@ export default function AddAgency() {
         getClients();
     }, []);
 
+    // Fetch companies from API on component mount
     useEffect(() => {
-        const getClients = async () => {
+        const getCompanies = async () => {
             try {
                 const data = await fetchAgency();
                 setCompanies(data);
             } catch (error) {
-                console.error('Error fetching clients:', error);
+                console.error('Error fetching companies:', error);
             }
         };
 
-        getClients();
+        getCompanies();
     }, []);
 
+    // Handle input change for form fields
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData({
@@ -65,6 +76,7 @@ export default function AddAgency() {
         });
     };
 
+    // Handle company selection
     const handleCompanyChange = (e) => {
         const selectedCompanyId = e.target.value;
         setFormData({
@@ -73,6 +85,7 @@ export default function AddAgency() {
         });
     };
 
+    // Handle client selection
     const handleClientsChange = (e) => {
         const selectedClientID = e.target.value;
         setFormData({
@@ -81,59 +94,39 @@ export default function AddAgency() {
         });
     };
 
+    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoader(true)
+        setLoader(true);
 
         const submissionData = new FormData();
 
-        submissionData.append('company_name', formData.company_name);
-        submissionData.append('person_name', formData.person_name);
-        submissionData.append('person_surname', formData.person_surname);
-        submissionData.append('phone_number', formData.phone_number);
-        submissionData.append('email', formData.email);
-        submissionData.append('website', formData.website);
-        submissionData.append('address', formData.address);
-        submissionData.append('language', formData.language);
-        submissionData.append('vat', formData.vat);
-        submissionData.append('client_name', formData.client_name);
-        submissionData.append('linked_company', formData.linked_company);
-        submissionData.append('note', formData.note);
-
-        formData.documents.forEach((doc, index) => {
-            submissionData.append(`documents[${index}]document`, doc.document); // File
-            submissionData.append(`documents[${index}]document_name`, doc.document_name); // String
-            submissionData.append(`documents[${index}]issue_date`, doc.issue_date); // Date
-            submissionData.append(`documents[${index}]expiry_date`, doc.expiry_date); // Date
-        });
-    
-        try {
-            const res = await fetch(`${backendUrl}owner/agencies/`, {
-                method: 'POST',
-                body: submissionData
-            });
-
-            if (!res.ok) {
-                const errorData = await res.json();
-                console.error('Error creating agency:', errorData);
-                toast.error('Failed to create client. Please try again.');
-                setLoader(false)
-                return;
+        // Append form data to FormData object
+        Object.keys(formData).forEach(key => {
+            if (key !== 'documents') {
+                submissionData.append(key, formData[key]);
             }
+        });
 
-            const data = await res.json();
-            console.log('Agency created successfully:', data);
-            toast.success('Client added successfully.');
-            setLoader(false)
+        // Append documents
+        formData.documents.forEach((doc, index) => {
+            submissionData.append(`documents[${index}]document`, doc.document);
+            submissionData.append(`documents[${index}]document_name`, doc.document_name);
+            submissionData.append(`documents[${index}]issue_date`, doc.issue_date);
+            submissionData.append(`documents[${index}]expiry_date`, doc.expiry_date);
+        });
+
+        // Call API to create the agency
+        try {
+            await createAgency(submissionData);
         } catch (error) {
-            console.error('Error creating agency:', error);
-            toast.error('An error occurred. Please try again.');
-            setLoader(false)
+            console.error("Error creating agency", error);
+        } finally {
+            setLoader(false); // Reset loader state
         }
     };
 
-
-
+    // Function to add a new document
     const addDocument = (document) => {
         setFormData({
             ...formData,
@@ -191,7 +184,7 @@ export default function AddAgency() {
                     </div>
                     <div className="relative w-full md:w-[49%]">
                         <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                            Person{`'`}s Number
+                            Phone Number
                         </label>
                         <input
                             type="text"
@@ -277,7 +270,6 @@ export default function AddAgency() {
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
-
                     <div className="relative w-full md:w-[49%]">
                         <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
                             Enter Client Name
@@ -333,23 +325,22 @@ export default function AddAgency() {
                     />
                 </div>
 
-                {/* Create New Document */}
+                {/* Create New Document Button */}
                 <div
                     className='mt-8 p-5 border-2 border-dashed border-gray-500 md:w-[30%] lg:w-[25%] text-center sm:w-full cursor-pointer'
-                    onClick={() => { setIsShowModal(true) }}
+                    onClick={() => { setIsShowModal(true); }}
                 >
                     <p className='font-bold text-gray-400'>Create New Document</p>
                     <Image className='my-4 mx-auto' src={documentIcon} width={50} height={50} alt="Document Icon" />
                 </div>
 
                 {/* Document Modal */}
-                {
-                    isShowModal &&
+                {isShowModal && (
                     <AddDocumentModal
                         setIsShowModal={setIsShowModal}
                         addDocument={addDocument}
                     />
-                }
+                )}
 
                 {/* Form Actions */}
                 <div className='flex items-center justify-end gap-4 flex-col sm:flex-row mt-8'>
