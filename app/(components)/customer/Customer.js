@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import AddCustomerOrAgencyModal from '../modal/addCustomerOrAgencyModal/AddCustomerOrAgencyModal'
 
-export default function Customer({ setActiveTab, formData, handleChange , setFormData}) {
+export default function Customer({ setActiveTab, formData, handleChange, setFormData }) {
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     const [showAddCustomerOrAgencyModal, setAddCustomerOrAgencyModal] = useState(false);
     const [clients, setClients] = useState([]);
@@ -43,7 +43,7 @@ export default function Customer({ setActiveTab, formData, handleChange , setFor
         // Set the selected client ID in the formData
         setFormData((prevData) => ({
             ...prevData,
-            client: client.id, 
+            client: client.id,
         }));
     };
 
