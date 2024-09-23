@@ -30,7 +30,7 @@ export default function Page() {
         bill_from: '',
         paid_status: '',
         already_paid_date: '',
-        payment_method: '',
+        payment_method: 1,
         total_amount_to_be_paid: 0
     });
 
