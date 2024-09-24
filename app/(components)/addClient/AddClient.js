@@ -44,10 +44,25 @@ export default function AddClient() {
     };
 
     const handleSubmit = async (e) => {
-        setLoader(true)
         e.preventDefault();
-        console.log("FORM DATA S HERE", formData);
+        setLoader(true);
+        if (!formData.client_name.trim()) {
+            toast.error('Client name is required.');
+            setLoader(false);
+            return;
+        }
+        if (!formData.email.trim()) {
+            toast.error('Email is required.');
+            setLoader(false);
+            return;
+        }
+        if (!formData.phone_number.trim()) {
+            toast.error('Phone number is required.');
+            setLoader(false);
+            return;
+        }
 
+        console.log("FORM DATA IS HERE", formData);
 
         const formDataToSend = new FormData();
         for (const key in formData) {
@@ -83,18 +98,15 @@ export default function AddClient() {
                     image: null,
                 });
                 toast.success('Client added successfully.');
-                setLoader(false)
-
             } else {
                 console.error('Failed to create client:', response.statusText);
                 toast.error('Failed to create client. Please try again.');
-                setLoader(false)
-
             }
         } catch (error) {
             console.error('Error:', error);
             toast.error('An error occurred. Please try again.');
-            setLoader(false)
+        } finally {
+            setLoader(false);
         }
     };
 
