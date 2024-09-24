@@ -267,50 +267,56 @@ export default function Page() {
                         </thead>
                         <tbody>
                             {
-                                filteredReservations.map((item, index) => {
-                                    const vehicle = vehicles.find(v => v.id === item.vehicle);
-                                    const brand = brands.find(b => b.name === vehicle?.brand);
+                                filteredReservations.length > 0 ? (
+                                    filteredReservations.map((item, index) => {
+                                        const vehicle = vehicles.find(v => v.id === item.vehicle);
+                                        const brand = brands.find(b => b.name === vehicle?.brand);
 
-                                    return (
-                                        <tr key={index} className="w-full  text-gray-400 uppercase text-sm leading-normal">
-                                            <td className="w-[5%] py-3 px-4 text-left">{item.id}</td>
-                                            <td className="w-[15%] py-3 px-4 text-left">
-                                                <div className="flex items-center">
-                                                    {brand ? (
-                                                        <Image src={brand.logo} width={30} height={30} alt={brand.name} className="mr-2" />
-                                                    ) : null}
-                                                    {vehicle ? vehicle.brand : null}
-                                                </div>
-                                            </td>
-                                            <td className="w-[15%] py-3 px-4 text-left">Customer & Info</td>
-                                            <td className="w-[15%] py-3 px-4 text-left">
-                                                <p className='text-[10px] underline'>{item.pickup_location}</p>
-                                                <p className='text-[10px] underline'>{item.return_location}</p>
-                                            </td>
-                                            <td className="w-[15%] py-3 px-4 text-left">
-                                                <p className='text-[10px]'>{`${item.start_date} | ${item.start_time}`}</p>
-                                                <p className='text-[10px]'>{`${item.end_date} | ${item.end_time}`}</p>
-                                            </td>
-                                            <td className="w-[15%] py-3 px-4 text-left">
-                                                <p className='text-[10px]'>€ {item.total_price}</p>
-                                            </td>
-                                            <td className="py-3 px-4 text-left flex justify-center">
-                                                <Image
-                                                    onClick={() => toggleMoreMenu(item.id)}
-                                                    className='bg-transparent' src={more} height={20} width={20} alt="More Icon" />
-                                            </td>
-                                            {
-                                                moreMenu === item.id && (
-                                                    <div className='absolute right-8 bg-white border rounded-md'>
-                                                        <p className='hover:bg-gray-300 p-2'>View or Edit</p>
-                                                        <p onClick={() => setMoreMenu(null)} className='hover:bg-gray-300 p-2'>Cancel</p>
-                                                        <p className='hover:bg-gray-300 p-2'>Create invoice</p>
+                                        return (
+                                            <tr key={index} className="w-full text-gray-400 uppercase text-sm leading-normal">
+                                                <td className="w-[5%] py-3 px-4 text-left">{item.id}</td>
+                                                <td className="w-[15%] py-3 px-4 text-left">
+                                                    <div className="flex items-center">
+                                                        {brand ? (
+                                                            <Image src={brand.logo} width={30} height={30} alt={brand.name} className="mr-2" />
+                                                        ) : null}
+                                                        {vehicle ? vehicle.brand : null}
                                                     </div>
-                                                )
-                                            }
-                                        </tr>
-                                    )
-                                })
+                                                </td>
+                                                <td className="w-[15%] py-3 px-4 text-left">Customer & Info</td>
+                                                <td className="w-[15%] py-3 px-4 text-left">
+                                                    <p className='text-[10px] underline'>{item.pickup_location}</p>
+                                                    <p className='text-[10px] underline'>{item.return_location}</p>
+                                                </td>
+                                                <td className="w-[15%] py-3 px-4 text-left">
+                                                    <p className='text-[10px]'>{`${item.start_date} | ${item.start_time}`}</p>
+                                                    <p className='text-[10px]'>{`${item.end_date} | ${item.end_time}`}</p>
+                                                </td>
+                                                <td className="w-[15%] py-3 px-4 text-left">
+                                                    <p className='text-[10px]'>€ {item.total_price}</p>
+                                                </td>
+                                                <td className="py-3 px-4 text-left flex justify-center">
+                                                    <Image
+                                                        onClick={() => toggleMoreMenu(item.id)}
+                                                        className='bg-transparent' src={more} height={20} width={20} alt="More Icon" />
+                                                </td>
+                                                {
+                                                    moreMenu === item.id && (
+                                                        <div className='absolute right-8 bg-white border rounded-md'>
+                                                            <p className='hover:bg-gray-300 p-2'>View or Edit</p>
+                                                            <p onClick={() => setMoreMenu(null)} className='hover:bg-gray-300 p-2'>Cancel</p>
+                                                            <p className='hover:bg-gray-300 p-2'>Create invoice</p>
+                                                        </div>
+                                                    )
+                                                }
+                                            </tr>
+                                        )
+                                    })
+                                ) : (
+                                    <tr>
+                                        <td colSpan="7" className="text-center text-gray-500 py-5">No reservations found.</td>
+                                    </tr>
+                                )
                             }
                         </tbody>
 
