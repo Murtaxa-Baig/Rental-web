@@ -7,8 +7,8 @@ import AddDocumentModal from '../modal/addDocumentModal/AddDocumentModal';
 import { fetchAgency } from '@/app/api/fetchAgency';
 import { fetchClients } from '@/app/api/fetchClients';
 import { createAgency } from '@/app/api/createAgency';
-import { ToastContainer } from 'react-toastify';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function AddAgency() {
     // State variables
     const [isShowModal, setIsShowModal] = useState(false);
@@ -20,7 +20,7 @@ export default function AddAgency() {
         email: '',
         website: '',
         address: '',
-        language: 'EN', 
+        language: '',
         vat: '',
         client_name: '',
         linked_company: '',
@@ -33,9 +33,9 @@ export default function AddAgency() {
 
     // Supported languages for selection
     const languages = [
-        'English', 'Russian', 'Italian', 
-        'German', 'French', 'Portuguese', 
-        'Spanish', 'Polish', 'Chinese', 
+        'English', 'Russian', 'Italian',
+        'German', 'French', 'Portuguese',
+        'Spanish', 'Polish', 'Chinese',
         'Dutch', 'Czech'
     ];
 
@@ -116,15 +116,60 @@ export default function AddAgency() {
             submissionData.append(`documents[${index}]expiry_date`, doc.expiry_date);
         });
 
+        if (!formData.company_name.trim()) {
+            toast.error('Company name is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.person_name.trim()) {
+            toast.error('Person name is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.phone_number.trim()) {
+            toast.error('Phone number is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.email.trim()) {
+            toast.error('Email is required.');
+            setLoader(false);
+            return;
+        }
+
         // Call API to create the agency
         try {
-            await createAgency(submissionData);
+            let res = await createAgency(submissionData);
+
+            if (res.ok) {
+                setFormData({
+                    company_name: '',
+                    person_name: '',
+                    person_surname: '',
+                    phone_number: '',
+                    email: '',
+                    website: '',
+                    address: '',
+                    language: '',
+                    vat: '',
+                    client_name: '',
+                    linked_company: '',
+                    note: '',
+                    documents: []
+                });
+                toast.success('Agency created successfully!');
+            }
         } catch (error) {
             console.error("Error creating agency", error);
+            toast.error('An error occurred while creating the agency.');
         } finally {
-            setLoader(false); // Reset loader state
+            setLoader(false);
         }
     };
+
 
     // Function to add a new document
     const addDocument = (document) => {
@@ -150,7 +195,7 @@ export default function AddAgency() {
                             value={formData.company_name}
                             onChange={handleInputChange}
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
+                        // required
                         />
                     </div>
                     <div className="relative w-full md:w-[49%]">
@@ -163,7 +208,7 @@ export default function AddAgency() {
                             value={formData.person_name}
                             onChange={handleInputChange}
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
+                        // required
                         />
                     </div>
                 </div>
@@ -208,7 +253,7 @@ export default function AddAgency() {
                             value={formData.email}
                             onChange={handleInputChange}
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
+                        // required
                         />
                     </div>
                     <div className="relative w-full md:w-[49%]">
