@@ -4,8 +4,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function NewPaymentModal({ setShowModal }) {
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
+    const [loader, setLoader] = useState(false)
     const [formData, setFormData] = useState({
-        payment_method: "bank",
+        payment_method: "",
         name: "",
         cif: "",
         iban: "",
@@ -30,6 +31,49 @@ export default function NewPaymentModal({ setShowModal }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoader(true)
+
+
+        if (!formData.payment_method.trim()) {
+            toast.error('Payment method is required.');
+            setLoader(false);
+            return;
+        }
+        if (!formData.name.trim()) {
+            toast.error('Name is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.cif.trim()) {
+            toast.error('CIF is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.iban.trim()) {
+            toast.error('IBAN is required.');
+            setLoader(false);
+            return;
+        }
+        if (!formData.swift.trim()) {
+            toast.error('SWIFT is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.account.trim()) {
+            toast.error('Account number is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.bank.trim()) {
+            toast.error('Bank name is required.');
+            setLoader(false);
+            return;
+        }
+
         try {
             const response = await fetch(`${backendUrl}owner/payment-methods/`, {
                 method: 'POST',
@@ -52,11 +96,18 @@ export default function NewPaymentModal({ setShowModal }) {
                     bank: "",
                     address: ""
                 });
+                setLoader(false)
+                setTimeout(() => {
+                    setShowModal(false)
+                }, 1500)
+
             } else {
                 toast.error('Failed to create client. Please try again.');
+                setLoader(false)
             }
         } catch (error) {
             toast.error('An error occurred. Please try again.');
+            setLoader(false)
         }
     };
     return (
@@ -86,7 +137,7 @@ export default function NewPaymentModal({ setShowModal }) {
                                         onChange={handleInputChange}
                                         value={formData.payment_method}
                                         id="" className='w-full p-2 text-gray-500 rounded-md border-[1px] border-gray-400 outline-none'>
-                                        {['Bank Transfer'].map((item, index) => (
+                                        {['', 'Bank Transfer'].map((item, index) => (
                                             <option key={index} value={item}>{item}</option>
                                         ))}
                                     </select>
@@ -201,7 +252,7 @@ export default function NewPaymentModal({ setShowModal }) {
                                 </div>
                                 <div className="w-full md:w-[49%]">
                                     <button type='submit' className='w-full bg-blue-500 rounded-md font-bold text-white h-12'>
-                                        Add
+                                        {loader ? 'Adding...' : 'Add'}
                                     </button>
                                 </div>
                             </div>
