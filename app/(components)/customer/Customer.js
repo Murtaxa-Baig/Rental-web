@@ -5,46 +5,116 @@ export default function Customer({ setActiveTab, formData, handleChange, setForm
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     const [showAddCustomerOrAgencyModal, setAddCustomerOrAgencyModal] = useState(false);
     const [clients, setClients] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [filteredClients, setFilteredClients] = useState([]);
-    const [selectedClient, setSelectedClient] = useState(null);
-    const [dropdownVisible, setDropdownVisible] = useState(false);
+    const [agencies, setAgencies] = useState([])
+    const [combinedData, setCombinedData] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [filteredData, setFilteredData] = useState([]);
     const [isNextTab, setIsNextTab] = useState(false)
 
+    useEffect(() => {
+        const delayDebounce = setTimeout(() => {
+            if (searchQuery) {
+                handleSearch();
+            }
+        }, 500); // 500ms delay
+        return () => clearTimeout(delayDebounce);
+    }, [searchQuery]);
+
+
     const fetchClients = async () => {
-        const response = await fetch(`${backendUrl}owner/create-client/`);
-        const result = await response.json();
-        setClients(result);
+        try {
+            const res = await fetch(`${backendUrl}owner/create-client/`);
+            if (!res.ok) throw new Error("Network Response was not ok");
+            const data = await res.json();
+            setClients(data);
+        } catch (error) {
+            console.log("Error fetching clients", error);
+        }
     };
 
+
+
+
+    const fetchAgencies = async () => {
+        try {
+            const res = await fetch(`${backendUrl}owner/agencies/`);
+            if (!res.ok) throw new Error('Network response was not ok');
+            const data = await res.json();
+            setAgencies(data);
+        } catch (error) {
+            console.error('Error fetching agencies:', error);
+        }
+    };
     useEffect(() => {
-        fetchClients();
+        const fetchData = async () => {
+            await fetchClients();
+            await fetchAgencies();
+        };
+
+        fetchData();
     }, []);
 
     useEffect(() => {
-        // Filter clients based on the search term
-        if (searchTerm) {
-            const filtered = clients.filter(client =>
-                client.client_name.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            setFilteredClients(filtered);
-        } else {
-            setFilteredClients(clients);
+        if (clients.length > 0 || agencies.length > 0) {
+            const combinedArray = [...clients, ...agencies];
+
+            setCombinedData(combinedArray);  // Use combinedData for filtering later
+            setFilteredData(combinedArray); // Initially set filteredData to the full list
+            console.log("COMBINED DATA LENGHT", combinedData.length);
         }
-    }, [searchTerm, clients]);
+    }, [clients, agencies]);
 
-    const handleClientClick = (client) => {
-        setSelectedClient(client);
-        setSearchTerm(client.client_name);
-        setFilteredClients([]);
-        setDropdownVisible(false);
-        setIsNextTab(true);
 
-        // Set the selected client ID in the formData
-        setFormData((prevData) => ({
-            ...prevData,
-            client: client.id,
-        }));
+
+
+
+    const handleSearch = () => {
+
+        if (!searchQuery) {
+            setFilteredData(combinedData);
+            return;
+        }
+        console.log("search query char", searchQuery);
+
+
+        const filtered = combinedData.filter((item) => {
+            const companyName = typeof item.company_name === 'string' ? item.company_name.toLowerCase() : '';
+            const clientName = typeof item.client_name === 'string' ? item.client_name.toLowerCase() : '';
+
+            return companyName.includes(searchQuery.toLowerCase()) || clientName.includes(searchQuery.toLowerCase());
+        });
+        console.log("FILTER DATA IS HERE", filtered)
+        setFilteredData(filtered); // Update the filtered data state
+    };
+
+
+
+    useEffect(() => {
+        handleSearch();
+    }, [searchQuery, combinedData]);
+
+
+
+
+    
+    const handleSelect = (item) => {
+        if (item.company_name) {
+            setFormData({
+                ...formData,
+                content_type: 12,
+                object_id: item.id,
+            });
+        } else if (item.client_name) {
+            setFormData({
+                ...formData,
+                content_type: 13,
+                object_id: item.id,
+            });
+        }
+        setSearchQuery(item.client_name || item.company_name);
+        // setClientAgencyName(item.client_name || item.company_name)
+        setDropdownOpen(false);
     };
 
 
@@ -55,13 +125,11 @@ export default function Customer({ setActiveTab, formData, handleChange, setForm
             <div className='flex flex-col sm:flex-row text-center w-full gap-2 relative'>
                 <input
                     type="text"
-                    name="client"
-                    placeholder='Start typing client / Agency name'
-                    className='p-2 border-[1px] h-14 border-gray-500 rounded-md outline-none w-full sm:w-[70%]'
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    onFocus={() => setDropdownVisible(true)}
-                    onBlur={() => setTimeout(() => setDropdownVisible(false), 200)}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className='border-[1px] border-gray-400 rounded-md w-full md:w-[70%] p-2 h-14'
+                    placeholder='Start typing client/agency name'
+                    onFocus={() => setDropdownOpen(true)}
                 />
                 <button
                     onClick={() => setAddCustomerOrAgencyModal(true)}
@@ -69,27 +137,21 @@ export default function Customer({ setActiveTab, formData, handleChange, setForm
                     Add new Client or Agency
                 </button>
 
-                {dropdownVisible && filteredClients.length > 0 && (
-                    <div className='absolute top-14 left-0 w-full sm:w-[69%] rounded-md bg-white border border-gray-300 max-h-60 overflow-y-auto z-10'>
-                        {filteredClients.map((client) => (
-                            <button
-                                key={client.id}
-                                onClick={() => handleClientClick(client)}
-                                onMouseDown={() => handleClientClick(client)}
-                                className='cursor-pointer text-left p-2 w-full hover:bg-gray-200'>
-                                {client.client_name}
-                            </button>
+                {dropdownOpen && filteredData.length > 0 && (
+                    <ul className="absolute top-14 z-10 bg-slate-100 border border-gray-300 rounded-md max-h-60 overflow-y-auto w-[82%] md:w-[50%]">
+                        {filteredData.map((item, index) => (
+                            <li
+                                key={index}
+                                onClick={() => handleSelect(item)}
+                                className="p-2 cursor-pointer hover:bg-gray-200 text-left"
+                            >
+                                {item.company_name || item.client_name}
+                            </li>
                         ))}
-                    </div>
+                    </ul>
                 )}
             </div>
 
-            {selectedClient && (
-                <div className='mt-4 p-4 border rounded'>
-                    <h3 className='text-lg font-bold'>Selected Client</h3>
-                    <p>Name: {selectedClient.client_name} {selectedClient.client_surname}</p>
-                </div>
-            )}
 
             {showAddCustomerOrAgencyModal && (
                 <AddCustomerOrAgencyModal

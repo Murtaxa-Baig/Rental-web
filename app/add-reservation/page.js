@@ -45,7 +45,10 @@ export default function Page() {
         additional_info_files: null,
         vehicle: null,
         company: null,
-        client: null
+        client: null,
+        Vehicle: null,
+        content_type: null,
+        object_id: null
     });
 
     const handleChange = (e) => {
@@ -59,6 +62,125 @@ export default function Page() {
     const handleSubmit = async (e) => {
         setLoader(true)
         e.preventDefault();
+
+        if (!formData.status.trim()) {
+            toast.error('Status is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.start_date.trim()) {
+            toast.error('Start date is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.start_time.trim()) {
+            toast.error('Start time is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.end_date.trim()) {
+            toast.error('End date is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.end_time.trim()) {
+            toast.error('End time is required.');
+            setLoader(false);
+            return;
+        }
+
+
+        if (!formData.pickup_location.trim()) {
+            toast.error('Pickup location is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.return_location.trim()) {
+            toast.error('Return locaion is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.vehicle) {
+            toast.error('Please select vehicle');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.content_type) {
+            toast.error('Agency / client is required');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.agency_commision) {
+            toast.error('Agency commision is required');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.delivery_price) {
+            toast.error('Delivery price is required');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.deposit) {
+            toast.error('Deposit is required');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.expenses) {
+            toast.error('Expenses is required');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.excess) {
+            toast.error('Excess is required');
+            setLoader(false);
+            return;
+        }
+
+
+        if (!formData.extra_services_charge) {
+            toast.error('Extra services charges is required');
+            setLoader(false);
+            return;
+        }
+        
+        if (!formData.price_per_day) {
+            toast.error('Price per day is required');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.vat_percentage) {
+            toast.error('VAT percentage is required');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.total_price) {
+            toast.error('Total price is required');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.km_extra_price) {
+            toast.error('Km extra price is required');
+            setLoader(false);
+            return;
+        }
+
+
+
         try {
             const response = await fetch(`${backendUrl}owner/reservations/`, {
                 method: 'POST',
@@ -100,14 +222,17 @@ export default function Page() {
                     additional_info_files: null,
                     vehicle: null,
                     company: null,
-                    client: null
+                    client: null,
+                    Vehicle: null,
+                    content_type: null,
+                    object_id: null
                 })
                 setLoader(false)
                 console.log('Success:', result);
             } else {
                 console.error('Error:', result);
                 setLoader(false)
-                toast.error('Failed to create client. Please try again.');
+                toast.error('Failed to create client.');
             }
         } catch (error) {
             console.error('Error during API call:', error);
