@@ -47,9 +47,46 @@ export default function AddStaffDriver() {
         }))
     }
 
+
+    const nextValidation = (e) => {
+        e.preventDefault()
+        if (!formData.name.trim()) {
+            toast.error('Name is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.phone_number.trim()) {
+            toast.error('Phone number is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.email.trim()) {
+            toast.error('Email is required.');
+            setLoader(false);
+            return;
+        }
+        setIsNextPart(true)
+    }
+
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         setLoader(true)
+
+        if (!formData.driving_license_scan) {
+            toast.error('Driving license scan is required.');
+            setLoader(false);
+            return;
+        }
+
+
+        if (!formData.passport_scan) {
+            toast.error('Passport scan is required.');
+            setLoader(false);
+            return;
+        }
 
         const data = new FormData()
         for (const key in formData) {
@@ -347,15 +384,13 @@ export default function AddStaffDriver() {
                             </select>
                         </div>
 
-                        <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-8">
-                            <div className='w-full md:w-[49%] flex items-center gap-2 my-5'>
-                                <button
-                                    type='button'
-                                    onClick={() => { setIsNextPart(true) }}
-                                    className='w-[49%] rounded-md font-bold text-white bg-blue-500 p-2'>
-                                    Next
-                                </button>
-                            </div>
+                        <div className="w-full flex justify-end mt-8">
+                            <button
+                                type='button'
+                                onClick={nextValidation}
+                                className='w-full md:w-[30%] rounded-md font-bold text-white bg-blue-500 p-2'>
+                                Next
+                            </button>
                         </div>
                     </>
                 )}
