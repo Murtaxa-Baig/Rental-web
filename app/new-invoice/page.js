@@ -50,6 +50,55 @@ export default function Page() {
     const handleSubmit = async (e) => {
         setLoader(true)
         e.preventDefault();
+
+
+        if (!formData.series.trim()) {
+            toast.error('Series is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.document_number.trim()) {
+            toast.error('Document number is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.date.trim()) {
+            toast.error('Date is required.');
+            setLoader(false);
+            return;
+        }
+
+        if (!formData.type_of_invoice.trim()) {
+            toast.error('Invoice type is required.');
+            setLoader(false);
+            return;
+        }
+
+
+        if (!formData.language.trim()) {
+            toast.error('Language is required.');
+            setLoader(false);
+            return;
+        }
+
+
+        if (!formData.content_type) {
+            toast.error('Client / Agency is required.');
+            setLoader(false);
+            return;
+        }
+
+
+        if (!formData.payment_method) {
+            toast.error('Payment method is required.');
+            setLoader(false);
+            return;
+        }
+
+
+
         try {
             const response = await fetch(`${backendUrl}owner/invoices/`, {
                 method: 'POST',
@@ -78,6 +127,7 @@ export default function Page() {
                     total_amount_to_be_paid: 0
                 })
                 setSearchQuery('')
+                setClientAgencyName('')
                 setLoader(false)
                 console.log('Success:', result);
             } else {
@@ -88,30 +138,25 @@ export default function Page() {
         } catch (error) {
             console.error('Error during API call:', error);
             setLoader(false)
-            toast.error('An error occurred. Please try again.');
         }
     };
-
 
 
 
     useEffect(() => {
         const delayDebounce = setTimeout(() => {
             if (searchQuery) {
-                handleSearch(searchQuery);
+                handleSearch();
             }
         }, 500); // 500ms delay
         return () => clearTimeout(delayDebounce);
     }, [searchQuery]);
 
 
-
     const fetchClients = async () => {
         try {
             const res = await fetch(`${backendUrl}owner/create-client/`);
-            if (!res.ok) {
-                throw new Error("Network Response was not ok");
-            }
+            if (!res.ok) throw new Error("Network Response was not ok");
             const data = await res.json();
             setClients(data);
         } catch (error) {
@@ -119,38 +164,33 @@ export default function Page() {
         }
     };
 
-
     const fetchPaymentMethod = async () => {
         try {
             const res = await fetch(`${backendUrl}owner/payment-methods/`);
-            if (!res.ok) {
-                throw new Error("Network Response was not ok");
-            }
+            if (!res.ok) throw new Error("Network Response was not ok");
             const data = await res.json();
             setPaymentMethod(data);
         } catch (error) {
-            console.log("Error fetching clients", error);
+            console.log("Error fetching payment methods", error);
         }
     };
 
-    const fetchCompanies = async () => {
+
+    const fetchAgencies = async () => {
         try {
             const res = await fetch(`${backendUrl}owner/agencies/`);
-            if (!res.ok) {
-                throw new Error('Network response was not ok');
-            }
+            if (!res.ok) throw new Error('Network response was not ok');
             const data = await res.json();
             setAgencies(data);
         } catch (error) {
-            console.error('Error fetching Agencies:', error);
+            console.error('Error fetching agencies:', error);
         }
     };
-
     useEffect(() => {
         const fetchData = async () => {
             await fetchClients();
-            await fetchCompanies();
-            await fetchPaymentMethod()
+            await fetchAgencies();
+            await fetchPaymentMethod();
         };
 
         fetchData();
@@ -159,7 +199,10 @@ export default function Page() {
     useEffect(() => {
         if (clients.length > 0 || agencies.length > 0) {
             const combinedArray = [...clients, ...agencies];
-            setFilteredData(combinedArray);
+
+            setCombinedData(combinedArray);  // Use combinedData for filtering later
+            setFilteredData(combinedArray); // Initially set filteredData to the full list
+            console.log("COMBINED DATA LENGHT", combinedData.length);
         }
     }, [clients, agencies]);
 
@@ -167,27 +210,35 @@ export default function Page() {
 
 
 
+    const handleSearch = () => {
 
-    const handleSearch = (e) => {
-        const query = e.target.value;
+        if (!searchQuery) {
+            setFilteredData(combinedData);
+            return;
+        }
+        console.log("search query char", searchQuery);
 
-        setSearchQuery(query);
-        setDropdownOpen(true);
 
         const filtered = combinedData.filter((item) => {
-            return (item.client_name && item.client_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-                (item.company_name && item.company_name.toLowerCase().includes(searchQuery.toLowerCase()));
+            const companyName = typeof item.company_name === 'string' ? item.company_name.toLowerCase() : '';
+            const clientName = typeof item.client_name === 'string' ? item.client_name.toLowerCase() : '';
 
-            // return (item.company_name) ? item.company_name.toLowerCase().includes(query.toLowerCase()) :
-            //     (item.client_name.toLowerCase().includes(query.toLowerCase()));
+            return companyName.includes(searchQuery.toLowerCase()) || clientName.includes(searchQuery.toLowerCase());
         });
-
-        setFilteredData(filtered);
+        console.log("FILTER DATA IS HERE", filtered)
+        setFilteredData(filtered); // Update the filtered data state
     };
 
 
 
-    console.log("===============", formData);
+    useEffect(() => {
+        handleSearch();
+    }, [searchQuery, combinedData]);
+
+
+
+
+    // console.log("===============", formData);
 
 
     const handleSelect = (item) => {
@@ -205,9 +256,9 @@ export default function Page() {
             });
         }
         setSearchQuery(item.client_name || item.company_name);
+        // setClientAgencyName(item.client_name || item.company_name)
         setDropdownOpen(false);
     };
-
 
 
 
@@ -291,7 +342,7 @@ export default function Page() {
                             value={formData.language}
                             onChange={handleChange}
                             id="" className='w-full p-2 text-gray-500 rounded-md border-[1px] border-gray-400 outline-none'>
-                            {['English', 'Russian', 'Italian', 'German', 'French', 'Portuguese', 'Spanish', 'Polish', 'Chinese', 'Dutch', 'Czech']
+                            {['', 'English', 'Russian', 'Italian', 'German', 'French', 'Portuguese', 'Spanish', 'Polish', 'Chinese', 'Dutch', 'Czech']
                                 .map((item, index) => (
                                     <option key={index} value={item}>{item}</option>
                                 ))}
@@ -323,16 +374,16 @@ export default function Page() {
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 className='border-[1px] border-gray-400 rounded-md w-full md:w-[70%] p-2 h-14'
                                 placeholder='Start typing client/agency name'
-                                onFocus={() => setDropdownOpen(true)} // Open dropdown when focused
+                                onFocus={() => setDropdownOpen(true)}
                             />
                             <br />
 
                             {/* Dropdown list */}
                             {dropdownOpen && filteredData.length > 0 && (
                                 <ul className="absolute bottom-0 z-10 bg-slate-100 border border-gray-300 rounded-md max-h-60 overflow-y-auto w-[82%] md:w-[25%]">
-                                    {filteredData.map((item) => (
+                                    {filteredData.map((item, index) => (
                                         <li
-                                            key={item.id}
+                                            key={index}
                                             onClick={() => handleSelect(item)}
                                             className="p-2 cursor-pointer hover:bg-gray-200"
                                         >
@@ -341,6 +392,7 @@ export default function Page() {
                                     ))}
                                 </ul>
                             )}
+
                             <div className='flex w-full md:w-[30%] flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4'>
                                 <Link
                                     href='/new-invoice'
@@ -367,7 +419,7 @@ export default function Page() {
                                 Select
                             </label>
                             <select name="" id="" className='w-full p-2 h-14 text-gray-500 rounded-md border-[1px] border-gray-400 outline-none'>
-                                {['Gig Maters'].map((item, index) => (
+                                {['', 'Gig Maters'].map((item, index) => (
                                     <option key={index} value={item}>{item}</option>
                                 ))}
                             </select>
