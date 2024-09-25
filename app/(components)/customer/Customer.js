@@ -102,13 +102,13 @@ export default function Customer({ setActiveTab, formData, handleChange, setForm
         if (item.company_name) {
             setFormData({
                 ...formData,
-                content_type: 12,
+                content_type: 11,
                 object_id: item.id,
             });
         } else if (item.client_name) {
             setFormData({
                 ...formData,
-                content_type: 13,
+                content_type: 10,
                 object_id: item.id,
             });
         }

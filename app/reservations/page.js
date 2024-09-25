@@ -142,6 +142,9 @@ export default function Page() {
         const result = await response.json();
         setReservations(result);
     };
+
+
+
     const fetchVehicle = async () => {
         const response = await fetch(`${backendUrl}owner/vehicles/`);
         const result = await response.json();
@@ -154,7 +157,7 @@ export default function Page() {
     }, []);
 
     console.log("reservations are here", reservations);
-    console.log("vehicle are here", vehicles);
+
 
 
     const filteredReservations = reservations.filter((reservation) => {
@@ -173,6 +176,25 @@ export default function Page() {
 
     const toggleMoreMenu = (reservationId) => {
         setMoreMenu(moreMenu === reservationId ? null : reservationId);
+    };
+
+
+
+    const Status = (status) => {
+        switch (status) {
+            case 'REQUESTED':
+                return 'bg-orange-400';
+            case 'CONFIRMED':
+                return 'bg-green-400';
+            case 'MAINTENANCE':
+                return 'bg-gray-400';
+            case 'COMPLETED':
+                return 'bg-blue-400';
+            case 'CANCELED':
+                return 'bg-red-400';
+            default:
+                return 'bg-gray-400';
+        }
     };
 
     return (
@@ -283,7 +305,17 @@ export default function Page() {
                                                         {vehicle ? vehicle.brand : null}
                                                     </div>
                                                 </td>
-                                                <td className="w-[15%] py-3 px-4 text-left">Customer & Info</td>
+                                                <td className="w-[15%] py-3 px-4 text-left">
+                                                    <div>
+                                                        {(item.related_data.client_name) ?
+                                                            (<p className='text-[12px] text-blue-500 underline'>{item.related_data.client_name} {item.related_data.client_surname}</p>) :
+                                                            (<p className='text-[12px] text-blue-500 underline'>{item.related_data.company_name} {item.related_data.company_surname}</p>)
+                                                        }
+                                                        <button className={`px-2 mt-2 border-[1px] rounded-md font-bold text-white ${Status(item.status)}`}>
+                                                            {item.status}
+                                                        </button>
+                                                    </div>
+                                                </td>
                                                 <td className="w-[15%] py-3 px-4 text-left">
                                                     <p className='text-[10px] underline'>{item.pickup_location}</p>
                                                     <p className='text-[10px] underline'>{item.return_location}</p>

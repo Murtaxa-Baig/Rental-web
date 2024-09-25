@@ -192,7 +192,7 @@ export default function Page() {
 
             const result = await response.json();
             if (response.ok) {
-                toast.success('Client added successfully.');
+                toast.success('Reservation added successfully.');
                 setFormData({
                     status: '',
                     start_date: '',
@@ -232,7 +232,7 @@ export default function Page() {
             } else {
                 console.error('Error:', result);
                 setLoader(false)
-                toast.error('Failed to create client.');
+                toast.error('Failed to create reservation.');
             }
         } catch (error) {
             console.error('Error during API call:', error);
