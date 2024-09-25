@@ -19,7 +19,7 @@ export default function AddVehicleImages({ handleChange, formData, handleRemoveI
                     Choose Images
                     <input
                         type="file"
-                        name="images"
+                        name="uploaded_images"
                         accept="image/*"
                         multiple
                         onChange={handleChange}

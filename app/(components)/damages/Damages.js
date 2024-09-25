@@ -10,7 +10,7 @@ import AddDamageModal from '../modal/addDamageModal/AddDamageModal';
 export default function Damages({ handleChange, formData }) {
 
     const [checked, setChecked] = useState(false);
-    const [showModal,setShowModal] = useState(false)
+    const [showModal, setShowModal] = useState(false)
 
 
     const handleChanges = (nextChecked) => {
@@ -42,7 +42,7 @@ export default function Damages({ handleChange, formData }) {
                         alt="Document Icon"
                         className="mx-auto "
                         title="Select Damage part"
-                        onClick={()=>setShowModal(true)}
+                        onClick={() => setShowModal(true)}
                     />
                 </div>
                 <div className="w-full md:w-[60%] sm:h-[40vh] md:h-[80vh] mt-4 md:mt-0 flex justify-center items-center">
@@ -51,7 +51,9 @@ export default function Damages({ handleChange, formData }) {
             </div>
             {
                 showModal && <AddDamageModal
-                setShowModal={setShowModal}
+                    formData={formData}
+                    handleChange={handleChange}
+                    setShowModal={setShowModal}
                 />
             }
 

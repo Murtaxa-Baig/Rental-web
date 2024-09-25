@@ -78,8 +78,9 @@ export default function VehicleInformation({ handleChange, formData }) {
     const toggleAccordion = (index) => {
         setActiveIndex(activeIndex === index ? null : index);
     };
-    const vehicleType = ['Car', 'Wagon', 'Moto', 'WaterToy', 'Boat']
+    const vehicleType = ['', 'Car', 'Wagon', 'Moto', 'WaterToy', 'Boat']
     const brand = [
+        { name: "", logo: null },
         { name: "Aston Martin", logo: astonMartin },
         { name: "Alfa Romeo", logo: alfaRomeo },
         { name: "Acura", logo: acura },
@@ -141,7 +142,7 @@ export default function VehicleInformation({ handleChange, formData }) {
     ]
 
     const model = ['2020', '2021', '2022', '2023']
-    const selectCategories = ['Wagon/Estate', 'Passenger van', 'Sedan', 'Convertible', 'Sport', 'SUV/4{`×`}4', 'Crossover', 'Coupe']
+    const selectCategories = ['', 'Wagon/Estate', 'Passenger van', 'Sedan', 'Convertible', 'Sport', 'SUV/4{`×`}4', 'Crossover', 'Coupe']
 
 
     const accordionData = [
@@ -166,20 +167,20 @@ export default function VehicleInformation({ handleChange, formData }) {
                 handleChange={handleChange}
             />
         },
-        {
-            title: 'Season matrix',
-            content: <SeasonMatrix
-                formData={formData}
-                handleChange={handleChange}
-            />
-        },
-        {
-            title: 'Additional',
-            content: <Additional
-                formData={formData}
-                handleChange={handleChange}
-            />
-        },
+        // {
+        //     title: 'Season matrix',
+        //     content: <SeasonMatrix
+        //         formData={formData}
+        //         handleChange={handleChange}
+        //     />
+        // },
+        // {
+        //     title: 'Additional',
+        //     content: <Additional
+        //         formData={formData}
+        //         handleChange={handleChange}
+        //     />
+        // },
         {
             title: 'Documents',
             content: <Documents
@@ -237,7 +238,7 @@ export default function VehicleInformation({ handleChange, formData }) {
                             </label>
                             <select
                                 value={formData.brand}
-                                onChange={handleBrandChange}  
+                                onChange={handleBrandChange}
                                 name="brand" id="" className='w-full p-2 text-gray-500 rounded-md border-2 border-gray-300 outline-none'>
                                 {brand.map((item, index) => (
                                     <option key={index} value={item.name}>{item.name}</option>
@@ -264,7 +265,11 @@ export default function VehicleInformation({ handleChange, formData }) {
                             <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
                                 Select categories
                             </label>
-                            <select name="" id="" className='w-full p-2 text-gray-500 rounded-md border-2 border-gray-300 outline-none'>
+                            <select
+                                name="categories"
+                                value={formData.categories}
+                                onChange={handleChange}
+                                id="" className='w-full p-2 text-gray-500 rounded-md border-2 border-gray-300 outline-none'>
                                 {selectCategories.map((item, index) => (
                                     <option key={index} value={item}>{item}</option>
                                 ))}
@@ -312,7 +317,7 @@ export default function VehicleInformation({ handleChange, formData }) {
                                 className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
-                        <div className="relative w-full md:w-[49%]">
+                        {/* <div className="relative w-full md:w-[49%]">
                             <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
                                 Link of offices
                             </label>
@@ -323,7 +328,7 @@ export default function VehicleInformation({ handleChange, formData }) {
                                 type="text"
                                 className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
@@ -332,14 +337,21 @@ export default function VehicleInformation({ handleChange, formData }) {
             <p className='text-sm my-4'>Here you can decide if the car is your own or if it{`'`}s the agency{`'`}s car.</p>
             <div className="grid grid-cols-1 mt-5 sm:grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-4">
                 <div className="md:col-span-1 lg:col-span-1 w-full flex items-center border-2 p-2 rounded-md h-14">
-                    <input type="radio" />
-                    <p className="font-bold text-gray-500 ml-2">It{`'`}s own client</p>
+                    <input type="radio"
+                        name='ownership'
+                        value={formData.ownership}
+                        onChange={handleChange}
+                    />
+                    <label className="font-bold text-gray-500 ml-2">It{`'`}s own client</label>
                 </div>
                 <div className="md:col-span-3 lg:col-span-3 w-full relative h-14">
                     <label className="absolute -top-3 left-3 font-bold bg-white px-1 text-[12px] text-gray-600">
                         Link to company
                     </label>
                     <input
+                        name='company'
+                        value={formData.company}
+                        onChange={handleChange}
                         type="text"
                         className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none h-full"
                     />
@@ -394,15 +406,27 @@ export default function VehicleInformation({ handleChange, formData }) {
 
             <div className="grid grid-cols-1 mt-5 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="col-span-1 flex items-center">
-                    <input type="checkbox" id='excludeFromOffersGenerator' className='h-4 w-4' />
+                    <input type="checkbox" id='excludeFromOffersGenerator'
+                        name='exclude_from_offers'
+                        value={formData.exclude_from_offers}
+                        onChange={handleChange}
+                        className='h-4 w-4' />
                     <label For="excludeFromOffersGenerator" className='ml-2'>Exclude From Offers Generator</label>
                 </div>
                 <div className="col-span-1 flex items-center">
-                    <input type="checkbox" id='deactivatesd' className='h-4 w-4' />
+                    <input
+                        name='deactivated'
+                        value={formData.deactivated}
+                        onChange={handleChange}
+                        type="checkbox" id='deactivatesd' className='h-4 w-4' />
                     <label For="deactivatesd" className='ml-2'>Deactivatesd</label>
                 </div>
                 <div className="col-span-1 flex items-center">
-                    <input type="checkbox" id='hideFromBooking' className='h-4 w-4' />
+                    <input
+                        name='hide_from_booking'
+                        value={formData.hide_from_booking}
+                        onChange={handleChange}
+                        type="checkbox" id='hideFromBooking' className='h-4 w-4' />
                     <label For="hideFromBooking" className='ml-2'>Hide from Booking</label>
                 </div>
             </div>

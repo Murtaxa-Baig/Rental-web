@@ -1,13 +1,87 @@
-import React from 'react'
-import img from '@/public/images/img.svg'
+import React, { useState } from 'react';
+import img from '@/public/images/img.svg';
 import Image from 'next/image';
 
 export default function AddDamageModal({ setShowModal }) {
-
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
+    const [formData, setFormData] = useState({
+        damage_type: 'Scratch',
+        damage_degree: 'Low',
+        damage_description: '',
+        vehicle: 1,
+        image: null,
+        imagePreview: null,
+    });
 
     const closeModal = () => {
         setShowModal(false);
     };
+
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setFormData({
+                ...formData,
+                image: file,
+                imagePreview: URL.createObjectURL(file),
+            });
+        }
+    };
+
+
+    const removeImage = () => {
+        setFormData({
+            ...formData,
+            image: null,
+            imagePreview: null,
+        });
+    };
+
+
+    console.log("DAMAGE MODAL DATA IS HERE", formData);
+
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+
+        const postData = new FormData();
+        postData.append('damage_type', formData.damage_type);
+        postData.append('damage_degree', formData.damage_degree);
+        postData.append('damage_description', formData.damage_description);
+        postData.append('vehicle', formData.vehicle);
+        if (formData.image) {
+            postData.append('image', formData.image);
+        }
+
+        try {
+            const response = await fetch(`${backendUrl}owner/vehicle-damage/`, {
+                method: 'POST',
+                body: postData,
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Success:', result);
+                closeModal();
+            } else {
+                console.error('Failed to submit');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
     return (
         <>
             <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
@@ -23,50 +97,55 @@ export default function AddDamageModal({ setShowModal }) {
                     <hr className='text-gray-500' />
 
                     <div className="overflow-y-auto flex-grow">
-                        <form action="" onSubmit={(e) => e.preventDefault()} className='mx-4'>
+                        <form onSubmit={handleSubmit} className='mx-4'>
                             <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-8">
                                 <div className="relative w-full md:w-[69%] mb-4 md:mb-0">
                                     <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
                                         Damage type
                                     </label>
-                                    <select name="" id="" className='w-full p-2 text-gray-500 rounded-md border-[1px] border-gray-400 outline-none'>
-                                        {
-                                            ['Scratch', 'Dent', 'Clack', 'Clip'].map((item, index) => {
-                                                return <option key={index} value={item}>{item}</option>
-                                            }
-                                            )
-                                        }
+                                    <select
+                                        name="damage_type"
+                                        value={formData.damage_type}
+                                        onChange={handleChange}
+                                        className='w-full p-2 text-gray-500 rounded-md border-[1px] border-gray-400 outline-none'
+                                    >
+                                        {['Scratch', 'Dent', 'Clack', 'Clip'].map((item, index) => (
+                                            <option key={index} value={item}>{item}</option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div className="relative w-full md:w-[29%]">
                                     <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
                                         Degree
                                     </label>
-                                    <select name="" id="" className='w-full p-2 text-gray-500 rounded-md border-[1px] border-gray-400 outline-none'>
-                                        {
-                                            ['Low', 'High'].map((item, index) => {
-                                                return <option key={index} value={item}>{item}</option>
-                                            }
-                                            )
-                                        }
+                                    <select
+                                        name="damage_degree"
+                                        value={formData.damage_degree}
+                                        onChange={handleChange}
+                                        className='w-full p-2 text-gray-500 rounded-md border-[1px] border-gray-400 outline-none'
+                                    >
+                                        {['Low', 'High'].map((item, index) => (
+                                            <option key={index} value={item}>{item}</option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>
 
                             <div className="relative w-full mt-8">
                                 <label className="absolute -top-3 left-3 bg-white px-1 text-[12px] text-gray-600">
-                                    Damage discription
+                                    Damage description
                                 </label>
                                 <textarea
+                                    name="damage_description"
+                                    value={formData.damage_description}
+                                    onChange={handleChange}
                                     className='w-full border-[1px] border-gray-300 rounded-md outline-none p-2 text-gray-500 '
-                                    id=""
-                                    name=""
                                     rows="4"
                                     cols="50"
                                 />
                             </div>
 
-                            <label for="addImages" className='flex items-center justify-center mt-2 w-full border-[1px] border-blue-500 rounded-md font-bold text-blue-500 cursor-pointer p-2'>
+                            <label htmlFor="addImages" className='flex items-center justify-center mt-2 w-full border-[1px] border-blue-500 rounded-md font-bold text-blue-500 cursor-pointer p-2'>
                                 <Image
                                     src={img}
                                     width={20}
@@ -76,10 +155,18 @@ export default function AddDamageModal({ setShowModal }) {
                                 />
                                 Add images
                             </label>
-                            <input type="file" accept="image/*" id='addImages' className='hidden' />
+                            <input type="file" accept="image/*" id='addImages' className='hidden' onChange={handleImageChange} />
+
+                            {formData.imagePreview && (
+                                <div className="mt-4 flex flex-col items-center">
+                                    <img src={formData.imagePreview} alt="Preview" className="w-32 h-32 object-cover rounded-md" />
+                                    <button type="button" onClick={removeImage} className="text-red-500 mt-2 border-[1px] font-bold border-red-500 rounded-md p-2 hover:bg-red-500 hover:text-white">
+                                        Remove Image
+                                    </button>
+                                </div>
+                            )}
 
                             <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mt-4">
-
                                 <div className="w-full md:w-[49%]">
                                     <button type='submit' className='flex items-center justify-center text-white w-full bg-blue-500 rounded-md font-bold cursor-pointer p-2 mt-2 md:mt-0'>
                                         Save
@@ -93,15 +180,10 @@ export default function AddDamageModal({ setShowModal }) {
                                     </button>
                                 </div>
                             </div>
-
-
-
-
                         </form>
                     </div>
                 </div>
             </div>
-
         </>
-    )
+    );
 }

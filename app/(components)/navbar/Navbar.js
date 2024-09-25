@@ -11,6 +11,7 @@ import allReservation from '@/public/images/allReservation.svg';
 import user from '@/public/images/user.svg';
 import car from '@/public/images/car.svg';
 import mail from '@/public/images/mail.svg';
+import logo from '@/public/images/logo.svg';
 import file from '@/public/images/file.svg';
 import setting from '@/public/images/setting.svg';
 import {
@@ -37,6 +38,12 @@ export default function Navbar() {
                     <div className="flex items-center space-x-4">
                         <div className="text-white font-bold text-lg">
                             <Link href='/'>
+                                {/* <Image
+                                    src={logo}
+                                    height={40}
+                                    width={40}
+                                    alt='Logo'
+                                /> */}
                                 Buraak
                             </Link>
                         </div>

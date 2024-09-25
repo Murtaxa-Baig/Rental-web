@@ -31,7 +31,7 @@ export default function Tariffs({ formData, handleChange }) {
                     <input
                         type="radio"
                         id='dailyTariff'
-                        name='tariffType' 
+                        name='tariffType'
                         className='h-4 w-4'
                     />
                     <label htmlFor="dailyTariff" className='text-gray-500'>Daily tariff</label>
@@ -44,8 +44,8 @@ export default function Tariffs({ formData, handleChange }) {
                         </label>
                         <input
                             type="text"
-                            name="tariffName" 
-                            value={formData.tariffName || ''}
+                            name="tariff_name"
+                            value={formData.tariff_name}
                             onChange={handleChange}
                             className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none"
                         />
@@ -56,8 +56,8 @@ export default function Tariffs({ formData, handleChange }) {
                         </label>
                         <input
                             type="text"
-                            name="dailyPrice" 
-                            value={formData.dailyPrice || ''}
+                            name="daily_price"
+                            value={formData.daily_price}
                             onChange={handleChange}
                             className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none"
                         />
@@ -68,8 +68,8 @@ export default function Tariffs({ formData, handleChange }) {
                         </label>
                         <input
                             type="text"
-                            name="fromDays" 
-                            value={formData.fromDays || ''}
+                            name="from_days"
+                            value={formData.from_days}
                             onChange={handleChange}
                             className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none"
                         />
@@ -80,8 +80,8 @@ export default function Tariffs({ formData, handleChange }) {
                         </label>
                         <input
                             type="text"
-                            name="toDay" 
-                            value={formData.toDay || ''}
+                            name="to_days"
+                            value={formData.to_days}
                             onChange={handleChange}
                             className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none"
                         />
@@ -95,8 +95,8 @@ export default function Tariffs({ formData, handleChange }) {
                         </label>
                         <input
                             type="text"
-                            name="kmPerDay" 
-                            value={formData.kmPerDay || ''}
+                            name="kmPerDay"
+                            value={formData.km_extra_price_tariff || ''}
                             onChange={handleChange}
                             className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none"
                         />
@@ -107,8 +107,8 @@ export default function Tariffs({ formData, handleChange }) {
                         </label>
                         <input
                             type="text"
-                            name="kmExtPrice" 
-                            value={formData.kmExtPrice || ''}
+                            name="km_extra_price_tariff"
+                            value={formData.km_extra_price_tariff}
                             onChange={handleChange}
                             className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none"
                         />
@@ -117,8 +117,8 @@ export default function Tariffs({ formData, handleChange }) {
                         <input
                             type="checkbox"
                             id='unlimitedKilometers'
-                            name="unlimitedKilometers" 
-                            checked={formData.unlimitedKilometers || false}
+                            name="unlimited_kilometers"
+                            checked={formData.unlimited_kilometers}
                             onChange={handleChange}
                             className='h-5 w-5'
                         />
@@ -156,7 +156,7 @@ export default function Tariffs({ formData, handleChange }) {
                                             </label>
                                             <input
                                                 type="text"
-                                                name={`weeklyDailyPrice_${index}`} 
+                                                name={`weeklyDailyPrice_${index}`}
                                                 value={formData[`weeklyDailyPrice_${index}`] || ''}
                                                 onChange={handleChange}
                                                 className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none"
@@ -168,7 +168,7 @@ export default function Tariffs({ formData, handleChange }) {
                                             </label>
                                             <input
                                                 type="text"
-                                                name={`weeklyFromDays_${index}`} 
+                                                name={`weeklyFromDays_${index}`}
                                                 value={formData[`weeklyFromDays_${index}`] || ''}
                                                 onChange={handleChange}
                                                 className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none"
@@ -180,7 +180,7 @@ export default function Tariffs({ formData, handleChange }) {
                                             </label>
                                             <input
                                                 type="text"
-                                                name={`weeklyToDay_${index}`} 
+                                                name={`weeklyToDay_${index}`}
                                                 value={formData[`weeklyToDay_${index}`] || ''}
                                                 onChange={handleChange}
                                                 className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none"
@@ -195,7 +195,7 @@ export default function Tariffs({ formData, handleChange }) {
                                             </label>
                                             <input
                                                 type="text"
-                                                name={`weeklyKmPerDay_${index}`} 
+                                                name={`weeklyKmPerDay_${index}`}
                                                 value={formData[`weeklyKmPerDay_${index}`] || ''}
                                                 onChange={handleChange}
                                                 className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none"
@@ -207,7 +207,7 @@ export default function Tariffs({ formData, handleChange }) {
                                             </label>
                                             <input
                                                 type="text"
-                                                name={`weeklyKmExtPrice_${index}`} 
+                                                name={`weeklyKmExtPrice_${index}`}
                                                 value={formData[`weeklyKmExtPrice_${index}`] || ''}
                                                 onChange={handleChange}
                                                 className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none"
@@ -216,7 +216,7 @@ export default function Tariffs({ formData, handleChange }) {
                                         <div className="col-span-1 flex items-center gap-3">
                                             <input
                                                 type="checkbox"
-                                                id={`weeklyUnlimitedKilometers_${index}`} 
+                                                id={`weeklyUnlimitedKilometers_${index}`}
                                                 name={`weeklyUnlimitedKilometers_${index}`}
                                                 checked={formData[`weeklyUnlimitedKilometers_${index}`] || false}
                                                 onChange={handleChange}
